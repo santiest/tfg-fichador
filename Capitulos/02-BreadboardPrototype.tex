@@ -18,13 +18,31 @@ controller. There were two routes to take:
 
 The team's familiarity with \textit{Raspberry Pi} products and their reputation for reliability led to the 
 decision to utilize their offerings for the project. Given the lightweight processing requirements, the 
-\textit{Raspberry Pi Zero W}, a cost-effective single-board computer with built-in WiFi capabilities, emerged 
+\textit{Raspberry Pi Zero 2 W}, a cost-effective single-board computer with built-in WiFi capabilities, emerged 
 as a suitable option. Alternatively, the \textit{Raspberry Pi Pico W}, a microcontroller, presented another 
 viable choice.
 
 However, it's important to note that while the \textit{Pi Zero} offers more features and functionality, it 
 comes at a higher cost compared to the \textit{Pi Pico}. In fact, it costs almost three times as much. 
 Therefore, careful consideration is warranted to determine whether the additional expense justifies the benefits.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.6\textwidth]{Imagenes/Vectorial/piZero2W.pdf}
+        \caption{Raspberry Pi Zero 2 W}
+        \label{fig:piZero2W}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.6\textwidth]{Imagenes/Vectorial/piPicoWH.pdf}
+        \caption{Raspberry Pi Pico WH}
+        \label{fig:piPicoWH}
+    \end{minipage}
+\end{figure}
+
 
 %
 % Single-board Computers
@@ -82,8 +100,48 @@ onboard flash memory, which are less susceptible to such issues. Thus, lower ope
 
 As a conclusion, a \textbf{microcontroller will be used}, and in particular, the \textit{\textbf{Raspberry Pi Pico W}}.
 
+%
+% Electronic Modules
+%
 \subsection{Electronic Modules}
 
+Now that the microcontroller has been selected, additional components are necessary to meet the project's requirements. 
+Specifically, the device must integrate an NFC reader and an LCD screen. Additionally, other peripherals, such as a buzzer 
+or LED, may also be evaluated.
+
+We need to take into account the available buses and choose modules accordingly. Relying solely on the datasheet alone is 
+not enough to determine the buses that are usable concurrently, since if two different buses use the same pin, then they 
+cannot be used simultaneously. Referring to the pinout diagram of the Raspberry Pi Pico W provided below, we can identify 
+the available buses:
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width = 1\textwidth]{Imagenes/Vectorial/picow-pinout.pdf}
+	\caption{Raspberry Pi Pico W's Pinout}
+	\label{fig:piPicoPinout}
+\end{figure}
+
+For example, each UART bus conflicts with I2C buses. Therefore, when selecting components, it's crucial to ensure 
+compatibility with this layout.
+
+
+\subsubsection*{NFC Module}
+
+Various NFC boards are available on the market. Ideally, the desired NFC board would offer extended range, compact 
+form-factor, low power consumption, and support for multiple communication protocols such as UART, I2C, SPI, among others.
+
+The \textit{PN532} chipset produced by \textit{NXP} offers all three types of buses mentioned before, that is: High Speed 
+UART, I2C and SPI. Numerous boards utilizing this chipset are available on the market, with \textit{ElecHouse}'s offering 
+standing out for its excellent form-factor and impressive range. This specific board has been extensively replicated and 
+is accessible at a low cost, and various providers offer open-source code for controlling it.
+
+\subsubsection*{LCD Module}
+
+Initially, the idea of utilizing a black and white OLED display seemed appealing. However, as the size increased, so did 
+the price, and even then, the displays were still too small. Consequently, the most practical decision was to adhere to 
+LCD technology.
+
+Upon researching LCD modules, the \textit{LCD1602} module emerged as a suitable choice. It offers sufficient size, accommodating up to 16 characters per row across 2 rows, and provides satisfactory contrast. Additionally, it is available with I2C adapters for simplified control, requiring fewer pins on the microcontroller.
 
 % \begin{figure}[h]
 % 	\centering
