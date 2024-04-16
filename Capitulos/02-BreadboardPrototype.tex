@@ -111,8 +111,8 @@ or LED, may also be evaluated.
 
 We need to take into account the available buses and choose modules accordingly. Relying solely on the datasheet alone is 
 not enough to determine the buses that are usable concurrently, since if two different buses use the same pin, then they 
-cannot be used simultaneously. Referring to the pinout diagram of the Raspberry Pi Pico W provided below, we can identify 
-the available buses:
+cannot be used simultaneously. Referring to the pinout diagram of the \textit{Raspberry Pi Pico W} provided below, we can 
+identify the available buses:
 
 \begin{figure}[h]
 	\centering
@@ -132,8 +132,15 @@ form-factor, low power consumption, and support for multiple communication proto
 
 The \textit{PN532} chipset produced by \textit{NXP} offers all three types of buses mentioned before, that is: High Speed 
 UART, I2C and SPI. Numerous boards utilizing this chipset are available on the market, with \textit{ElecHouse}'s offering 
-standing out for its excellent form-factor and impressive range. This specific board has been extensively replicated and 
-is accessible at a low cost, and various providers offer open-source code for controlling it.
+standing out for its excellent form-factor (about 4cm$\times$4cm) and impressive range. This specific board has been 
+extensively replicated and is accessible at a low cost, and various providers offer open-source code for controlling it.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width = 0.3\textwidth]{Imagenes/Vectorial/PN532.pdf}
+	\caption{PN532 board}
+	\label{fig:pn532}
+\end{figure}
 
 \subsubsection*{LCD Module}
 
@@ -141,7 +148,37 @@ Initially, the idea of utilizing a black and white OLED display seemed appealing
 the price, and even then, the displays were still too small. Consequently, the most practical decision was to adhere to 
 LCD technology.
 
-Upon researching LCD modules, the \textit{LCD1602} module emerged as a suitable choice. It offers sufficient size, accommodating up to 16 characters per row across 2 rows, and provides satisfactory contrast. Additionally, it is available with I2C adapters for simplified control, requiring fewer pins on the microcontroller.
+Upon researching LCD modules, the \textit{LCD1602} module emerged as a suitable choice. It offers sufficient size, 
+accommodating up to 16 characters per row across 2 rows, and provides satisfactory contrast. Additionally, it is 
+available with I2C adapters for simplified control, requiring fewer pins on the microcontroller.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width = 0.7\textwidth]{Imagenes/Vectorial/LCD1602.pdf}
+	\caption{LCD1602 board}
+	\label{fig:lcd1602}
+\end{figure}
+
+
+\subsubsection*{Buzzer}
+
+Beyond just relying on visual cues displayed on the screen to convey the device's status, it's essential to enhance 
+the user experience by incorporating auditory feedback. When employees clock in to work, providing a distinct sound 
+signal from a buzzer ensures they receive immediate confirmation of their action.
+
+There are two types of buzzer:
+\begin{itemize}
+	\item \textbf{Active buzzers}: they incorporate an internal oscillator circuit that generates the sound signal 
+	when voltage is applied. They are self-contained and do not require external circuitry to produce sound. They 
+	are commonly used in applications where simplicity and ease of use are prioritized, as they can be directly 
+	connected to a power source to emit sound.
+	\item \textbf{Passive buzzers}: they require an external oscillating circuit to produce sound. An alternating 
+	current is applied to create vibrations that produce sound waves. They offer more flexibility in sound frequency 
+	and intensity control but require additional circuitry for operation.
+\end{itemize}
+
+Due to the project's time constraints and the preference for simplicity, \textbf{active buzzers will be employed}. 
+Additionally, since a single sound frequency suffices for the intended use, active buzzers are well-suited for the task.
 
 % \begin{figure}[h]
 % 	\centering
