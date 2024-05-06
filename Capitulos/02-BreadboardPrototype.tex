@@ -122,7 +122,7 @@ identify the available buses:
 \end{figure}
 
 For example, each UART bus conflicts with I2C buses. Therefore, when selecting components, it's crucial to ensure 
-compatibility with this layout.
+compatibility with this layout \cite{raspberrydocs}.
 
 
 \subsubsection*{NFC Module}
@@ -179,6 +179,33 @@ There are two types of buzzer:
 
 Due to the project's time constraints and the preference for simplicity, \textbf{active buzzers will be employed}. 
 Additionally, since a single sound frequency suffices for the intended use, active buzzers are well-suited for the task.
+
+
+\subsubsection*{Buses}
+
+As previously mentioned, various buses are available for interconnecting components. While the LCD is already configured 
+for I2C, the NFC reader offers more flexibility in bus selection. However, to maintain simplicity, the NFC reader will 
+also utilize the I2C bus.
+
+I2C, short for Inter-Integrated Circuit, is a serial communication protocol commonly utilized for connecting 
+microcontrollers and peripheral devices. It operates using two wires: \textit{SDA} (Serial Data) and \textit{SCL} (Serial 
+Clock). Devices connected to the bus are addressed individually by unique addresses, and communication follows a 
+master-slave configuration. The master device initiates communication and controls the bus, while one or more slave devices 
+respond to commands. Data is transferred sequentially, with the master device generating clock pulses to synchronize 
+communication \cite{nxpi2c}.
+
+However, I2C does have limitations. It operates at relatively low speeds compared to other protocols, which can impact 
+performance in applications requiring high data transfer rates. The length of the I2C bus is also limited due to signal 
+integrity issues, typically to a few meters, which may restrict the physical layout of devices in larger systems. In any 
+case, none of these limitations affect this project's use case.
+
+The \textit{Pi Pico} features two I2C buses, providing an additional bus beyond what is required. It's important to mention 
+that the two modules can share the same I2C bus since they have different I2C addresses. For instance, the PN532 always uses 
+the \textit{0}x\textit{48} address, which cannot be modified. Consequently, two PN532 readers cannot share the same bus and 
+must be placed separately. However, this is not an issue for the LCD as it uses a different address.
+
+Note: While the PN532 produced by \textit{NXP} does allow for the modification of the I2C address \cite{nxp_pn532}, it is 
+conventionally maintained at \textit{0}x\textit{48} \cite{i2cdevices_pn532}.
 
 % \begin{figure}[h]
 % 	\centering

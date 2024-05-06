@@ -1024,7 +1024,7 @@ FUNCTION {format.date}
 { year "year" bibinfo.check duplicate$ empty$
     {
       "empty year in " cite$ * "; set to ????" * warning$
-       pop$ "????"
+       pop$ ""
     }
     'skip$
   if$
