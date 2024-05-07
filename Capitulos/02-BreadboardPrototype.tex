@@ -132,7 +132,7 @@ form-factor, low power consumption, and support for multiple communication proto
 
 The \textit{PN532} chipset produced by \textit{NXP} offers all three types of buses mentioned before, that is: High Speed 
 UART, I2C and SPI. Numerous boards utilizing this chipset are available on the market, with \textit{ElecHouse}'s offering 
-standing out for its excellent form-factor (about 4cm$\times$4cm) and impressive range. This specific board has been 
+standing out for its excellent form-factor (about 4cm$\times$4cm) and impressive range \cite{pn532_elechouse}. This specific board has been 
 extensively replicated and is accessible at a low cost, and various providers offer open-source code for controlling it.
 
 \begin{figure}[h]
@@ -181,6 +181,41 @@ Due to the project's time constraints and the preference for simplicity, \textbf
 Additionally, since a single sound frequency suffices for the intended use, active buzzers are well-suited for the task.
 
 
+\subsubsection*{Cellular Connectivity Module}
+
+In certain locations, access to WiFi networks may be limited or unavailable altogether. Even in areas where WiFi is 
+accessible, signal strength may vary, leading to instances of poor connectivity. Consequently, it becomes imperative 
+to incorporate cellular connectivity options to ensure internet access across diverse environments and conditions. By 
+integrating cellular connectivity capabilities into the system, users can rely on alternative means of internet access, 
+mitigating the limitations posed by WiFi availability and signal quality fluctuations.
+
+Considering the time limitations, it would be benefitial to opt for a ready-made solution. However, it's worth noting 
+that the Raspberry Pi Pico, being a microcontroller, cannot simply utilize a USB dongle with a SIM card adapter for 
+cellular connectivity. A more intricate solution is necessary. Fortunately, there exists a module specifically designed 
+for compatibility with the Pi Pico, developed by \textit{Waveshare}. This module integrates the \textit{SIM7020E} module, 
+manufactured by \textit{SIMCOM}, a prominent provider of wireless modules and electronics.
+
+The \textit{SIM7020E} module, known for its affordability and low power consumption, is specifically designed for 
+NB-IoT\footnote{NB-IoT, short for Narrowband Internet of Things, is a low-power cellular technology designed for efficient 
+communication between IoT devices and networks.} applications, making it an optimal choice for M2M\footnote{M2M stands 
+for Machine-to-Machine, and encompasses a wide range of applications where devices or machines communicate and exchange 
+data without human intervention.} communication scenarios. Integrated into the \textit{Waveshare} board, this module 
+establishes communication with the Pi Pico through UART, using \textit{AT}\footnote{AT commands are a standardized set of 
+instructions used to communicate with and control modems and other serial devices.} commands for control and data exchange 
+\cite{sim7020e_datasheet}.
+
+However, a significant tradeoff exists as this module only supports NarrowBand IoT. NB-IoT operates within the LTE 
+(Long-Term Evolution) spectrum and is tailored for narrow bandwidths, making it ideal for low-power, wide-area IoT 
+applications. While NB-IoT typically utilizes the 4G LTE spectrum, it operates at reduced data rates compared to 
+conventional LTE, facilitating efficient communication with IoT devices while minimizing power consumption and costs.
+
+Nonetheless, this limitation poses challenges as the range constraints of LTE networks persist, potentially leading to 
+signal issues in underground facilities. In an ideal scenario, a module supporting 2G and NB-IoT would be preferable for 
+the project. However, such modules are not readily available on the market for seamless integration with the Pi Pico. While 
+\textit{SIMCOM} does offer several variants of these modules with diverse capabilities, developing a custom solution would 
+necessitate significant investment in terms of both time and resources.
+
+
 \subsubsection*{Buses}
 
 As previously mentioned, various buses are available for interconnecting components. While the LCD is already configured 
@@ -206,6 +241,36 @@ must be placed separately. However, this is not an issue for the LCD as it uses 
 
 Note: While the PN532 produced by \textit{NXP} does allow for the modification of the I2C address \cite{nxp_pn532}, it is 
 conventionally maintained at \textit{0}x\textit{48} \cite{i2cdevices_pn532}.
+
+%
+%	Prototype Assembly
+%
+
+\section{Prototype Assembly}
+
+Once the components have been selected and basic schematics drawn, the assembly process can commence. All components can be interconnected on a breadboard using jumper wires. It is important to highlight that the Raspberry Pi Pico WH comes with pre-soldered headers, facilitating easy integration for testing purposes. Only minimal soldering is required for certain components, such as the four pins on the NFC module and the fourteen pins for the Waveshare module.
+
+Many of the components necessary for this prototyping phase can be obtained by purchasing a basic electronics kit, which typically includes a breadboard and jumper wires, and other basic components such as a matrix keyboard and buzzer.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Imagenes/Vectorial/breadboard1.pdf}
+        \caption{First prototype mounted on a breadboard}
+        \label{fig:breadboard1}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Imagenes/Vectorial/breadboard2.pdf}
+        \caption{Zoom in on the Pi Pico and SIM7020E module}
+        \label{fig:breadboard2}
+    \end{minipage}
+\end{figure}
+
+Note: The initial prototype incorporated two NFC modules, as can be seen on figure \ref{fig:breadboard1}, intending to use one module for clocking in and the other for clocking out. This approach was adopted initially to streamline compatibility with a specific provider. However, this strategy was subsequently abandoned in favor of a simpler solution, whereby the worker's entry or exit status is determined through software processing.
+
 
 % \begin{figure}[h]
 % 	\centering
