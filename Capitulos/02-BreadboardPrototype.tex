@@ -248,9 +248,13 @@ conventionally maintained at \textit{0}x\textit{48} \cite{i2cdevices_pn532}.
 
 \section{Prototype Assembly}
 
-Once the components have been selected and basic schematics drawn, the assembly process can commence. All components can be interconnected on a breadboard using jumper wires. It is important to highlight that the Raspberry Pi Pico WH comes with pre-soldered headers, facilitating easy integration for testing purposes. Only minimal soldering is required for certain components, such as the four pins on the NFC module and the fourteen pins for the Waveshare module.
+Once the components have been selected and basic schematics drawn, the assembly process can commence. All components can be 
+interconnected on a breadboard using jumper wires. It is important to highlight that the Raspberry Pi Pico WH comes with 
+pre-soldered headers, facilitating easy integration for testing purposes. Only minimal soldering is required for certain 
+components, such as the four pins on the NFC module and the fourteen pins for the Waveshare module.
 
-Many of the components necessary for this prototyping phase can be obtained by purchasing a basic electronics kit, which typically includes a breadboard and jumper wires, and other basic components such as a matrix keyboard and buzzer.
+Many of the components necessary for this prototyping phase can be obtained by purchasing a basic electronics kit, which 
+typically includes a breadboard and jumper wires, and other basic components such as a matrix keyboard and buzzer.
 
 \begin{figure}[h]
     \centering
@@ -269,7 +273,17 @@ Many of the components necessary for this prototyping phase can be obtained by p
     \end{minipage}
 \end{figure}
 
-Note: The initial prototype incorporated two NFC modules, as can be seen on figure \ref{fig:breadboard1}, intending to use one module for clocking in and the other for clocking out. This approach was adopted initially to streamline compatibility with a specific provider. However, this strategy was subsequently abandoned in favor of a simpler solution, whereby the worker's entry or exit status is determined through software processing.
+\subsubsection*{Considerations}
+
+The initial prototype incorporated two NFC modules, as can be seen on figure \ref{fig:breadboard1}, intending to use one 
+module for clocking in and the other for clocking out. This approach was adopted initially to streamline compatibility 
+with a specific provider. However, this strategy was subsequently abandoned in favor of a simpler solution, whereby the 
+worker's entry or exit status is determined through software processing.
+
+Initially, the matrix keyboard was also contemplated as an alternative method for clocking in or out by entering a numeric 
+code. However, this approach was deemed impractical due to several concerns. Using the worker's national identification 
+number as the input code would involve handling sensitive information, which was not ideal. Additionally, distributing 
+individual codes to each worker would present logistical challenges. As a result, this approach was ultimately abandoned.
 
 
 % \begin{figure}[h]
