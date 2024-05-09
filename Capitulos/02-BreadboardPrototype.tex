@@ -261,6 +261,53 @@ must be placed separately. However, this is not an issue for the LCD as it uses 
 Note: While the PN532 produced by \textit{NXP} does allow for the modification of the I2C address \cite{nxp_pn532}, it is 
 conventionally maintained at \textit{0}x\textit{48} \cite{i2cdevices_pn532}.
 
+
+\subsubsection*{Matrix Keypad}
+
+A matrix keyboard offers an alternative means for employees to clock in or out by entering a numeric code, which can be 
+particularly useful if an employee forgets or misplaces their card. The working principle of matrix keyboards is 
+straightforward: as illustrated in Figure \ref{fig:matrix_keypad_schematics}, they consist of intersecting rows and columns. 
+Each key on the keyboard is positioned at the intersection of a row and a column. When a key is pressed, it creates a 
+connection between a specific row and column, resulting in a unique electrical signal that can be interpreted by the 
+microcontroller.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.8\textwidth]{Imagenes/Vectorial/matrix_keypad.pdf}
+        \caption{Matrix keypad}
+        \label{fig:matrix_keypad}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.8\textwidth]{Imagenes/Vectorial/matrix_keypad_schematics.pdf}
+        \caption{Matrix keypad's schematics}
+        \label{fig:matrix_keypad_schematics}
+    \end{minipage}
+\end{figure}
+
+
+Matrix keyboards utilize a scanning technique to detect key presses. The microcontroller sequentially activates each row, 
+while monitoring the columns for any signals. If a signal is detected, the microcontroller identifies the corresponding key 
+based on the activated row and column, allowing it to register the key press.
+
+One important consideration when using matrix keyboards is the potential for key ghosting or masking. Ghosting occurs when 
+multiple keys are pressed simultaneously, causing the keyboard to register unintended key presses. Masking, on the other hand, 
+happens when certain key combinations prevent other keys from registering. To mitigate these issues, careful design and 
+debounce techniques must be employed to ensure reliable key detection.
+
+During testing, it was observed that with sufficiently fast scanning and debouncing, the occurrence of ghosting or masking on 
+the keyboard would likely not present a problem in practical usage scenarios. This assessment stems from the understanding that 
+the likelihood of multiple key presses happening simultaneously on a wall-mounted device, such as the one being developed, is 
+minimal.
+
+Another challenge arises from the substantial use of GPIO pins on the microcontroller. The 4$\times$4 keyboard depicted in 
+Figure \ref{fig:matrix_keypad}, consisting of 4 rows and 4 columns, requires 8 GPIO pins for operation. Considering that the 
+Pi Pico offers a total of 29 GPIO pins, this allocation accounts for nearly 30 percent of available pins.
+
+
 %
 %	Prototype Assembly
 %
@@ -302,7 +349,7 @@ module for clocking in and the other for clocking out. This approach was adopted
 with a specific provider. However, this strategy was subsequently abandoned in favor of a simpler solution, whereby the 
 worker's entry or exit status is determined through software processing.
 
-Initially, the matrix keyboard was also contemplated as an alternative method for clocking in or out by entering a numeric 
+Initially, the matrix keyboard was contemplated as an alternative method for clocking in or out by entering a numeric 
 code. However, this approach was deemed impractical due to several concerns. Using the worker's national identification 
 number as the input code would involve handling sensitive information, which was not ideal. Additionally, distributing 
 individual codes to each worker would present logistical challenges. As a result, this approach was ultimately abandoned.
