@@ -342,7 +342,43 @@ using jumper wires. The small footprint of the Pi Pico further simplified the co
     \end{minipage}
 \end{figure}
 
-\subsubsection*{Considerations}
+In the subsequent sections, detailed explanations of the wiring configurations for all modules will be provided, 
+offering insights into their respective functionalities and interconnections within the system.
+
+\subsection{Matrix keypad wiring}
+
+\subsubsection*{Row Pins Configuration}
+\begin{itemize}
+	\item The 4 row pins are configured as INPUT with PULL-UP resistors enabled. This configuration allows the 
+	microcontroller to detect changes in voltage on these pins.
+	\item Each row pin is connected to the positive supply voltage (3V) through a 10k$\Omega$ resistor. This ensures 
+	that when no button is pressed, the row pins maintain a high voltage level due to the PULL-UP resistors.
+	\item When a button in a particular row is pressed, it creates a connection between the row and column pins, 
+	effectively pulling the voltage level of the corresponding row pin down to ground.
+\end{itemize}
+
+\subsubsection*{Column Pins Configuration}
+\begin{itemize}
+	\item The 4 column pins are configured as OUTPUT. During scanning, each column pin is individually set to false (logic 
+	low), one at a time, while the others remain at a high logic level (logic high or true).
+	\item By setting a column pin to false, it creates a path to ground for the corresponding row pins. If a button in the 
+	corresponding column and row is pressed, the voltage on the row pin is pulled low, indicating a button press.
+\end{itemize}
+
+\subsubsection*{Button Press Detection}
+\begin{itemize}
+	\item When a button is pressed, it forms a connection between a row and column pin. During scanning, when the 
+	corresponding column pin is set to false, it effectively pulls the voltage on the row pin down to ground.
+	\item The microcontroller continuously scans each column pin, one by one, and if it detects changes in voltage on one 
+	row pin, then it already pinpointed the row-column pair, corresponding to a key press.
+\end{itemize}
+
+In summary, this configuration allows the microcontroller to detect button presses on the keypad by scanning each column 
+and monitoring the voltage levels on the row pins. When a button is pressed, it creates a connection between a row and 
+column pin, causing a change in voltage on the row pin, which is detected by the microcontroller.
+
+
+\subsection{Considerations}
 
 The initial prototype incorporated two NFC modules, as can be seen on figure \ref{fig:breadboard1}, intending to use one 
 module for clocking in and the other for clocking out. This approach was adopted initially to streamline compatibility 
