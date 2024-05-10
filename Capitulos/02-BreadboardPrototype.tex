@@ -378,6 +378,82 @@ and monitoring the voltage levels on the row pins. When a button is pressed, it 
 column pin, causing a change in voltage on the row pin, which is detected by the microcontroller.
 
 
+\subsection{Devices on the I2C bus}
+
+Thanks to the straightforward nature of I2C communication, connecting both the LCD display and the NFC reader requires 
+just two wires each: one for the Serial Data Line (SDA) and the other for the Serial Clock Line (SCL), in addition to 
+the necessary VCC and GND connections. With the Pi Pico offering two I2C buses, either or both buses can be used. This 
+versatility is possible because the two devices possess distinct I2C addresses, as specified in their respective 
+datasheets.
+
+\subsubsection*{I2C Pull-up}
+Ensuring proper signal integrity is crucial for the reliable operation of I2C communication. One essential consideration 
+in this regard is the implementation of pull-up resistors on both the SDA and SCL of the bus.
+
+Pull-up resistors serve to maintain the default high logic level on the SDA and SCL lines when they are not actively 
+being driven by the master or slave devices. Without pull-up resistors, the I2C lines may float, leading to undefined 
+voltage levels and potential communication errors.
+
+The pull-up resistors effectively ``pull'' the voltage level of the I2C lines to the high logic level when they are not 
+actively being driven low by a device. This ensures clear signal transitions and prevents signal distortion or noise 
+interference that could disrupt communication.
+
+Typically, pull-up resistors are connected between the SDA and SCL lines and the positive supply voltage (VCC) of the 
+system. The value of the pull-up resistors determines the strength of the pull-up effect and should be chosen carefully 
+to balance signal integrity with power consumption.
+
+During the initial stages of the project, pull-up resistors were manually added to the SDA and SCL of the I2C bus to 
+ensure proper signal integrity. However, it was later discovered upon examination of the device schematics that both the 
+LCD display and NFC reader modules already incorporated pull-up resistors on their respective boards, with voltage level 
+translation from 5V to 3.3V.
+
+This unintentional duplication of pull-up resistors led to a reduction in the overall resistance of the pull-up network 
+and an increase in the strength of the pull-up effect on the I2C lines. The existing 4.7k$\Omega$ resistor in both the NFC 
+reader and LCD modules inadvertently paralleled with an additional 10k$\Omega$ resistor, effectively reduced the overall 
+resistance to approximately 3.2k$\Omega$ \cite{pn532_elechouse_schematics}. While this theoretically could result in faster 
+signal transitions, it also heightened susceptibility to noise and interference, potentially leading to signal integrity 
+issues. Additionally, the increased current draw from the additional pull-up resistors slightly elevated the power 
+consumption of the system.
+
+Despite these consequences, it is important to note that the unintentional duplication of pull-up resistors is unlikely to 
+cause permanent damage to the devices involved.
+
+\subsubsection*{Problems with the NFC reader}
+
+During a later phase of the project, an issue surfaced wherein the NFC reader would cease to respond after prolonged periods 
+of operation. The only indication of this malfunction was rapid flickering of its red LED. Attempts to command the reader 
+yielded no response, needing a power cycle to restore functionality. This could be achieved either by disconnecting and 
+reconnecting the power source or by pulling down the ``RSTPD\_N'' pin on the board. To mitigate this recurring problem, a 
+solution involving the insertion of a transistor between the microcontroller and the VCC pin on the NFC board was devised. 
+This approach was favored over direct soldering onto a minuscule 1-millimeter pin on the NFC board, which presented 
+challenges and fitting problems.
+
+
+\subsection{The SIM7020E board}
+
+With the Waveshare board purposefully engineered to align with the pinout of the Pi Pico, no wiring is necessary beyond 
+connecting the two components. This module interfaces with the microcontroller via UART for communication and utilizes 
+additional GPIO pins for auxiliary functions such as power management.
+
+A critical consideration is to avoid utilizing any pins already allocated by the SIM7020E board. This precaution can be 
+ensured by referencing the datasheet and wiki documentation provided by the manufacturer \cite{sim7020e_wiki}.
+
+Although the device includes a 3.7V Li-Po battery in the box, it was decided against its utilization due to concerns about 
+introducing an additional point of failure to the device. Furthermore, its presence impedes the Raspberry Pi from undergoing 
+a hard reset when disconnected from the power source.
+
+
+\subsection{Buzzer and other components}
+
+The active buzzer, requiring minimal setup, simply needs a transistor to toggle its state using a control signal from the 
+microcontroller. It's essential to note that it must still be connected to a 5V source, as the 3.3V from the GPIO pins is 
+insufficient, hence the requirement for the transistor.
+
+Adding an LED to the project is similarly straightforward, as it can be controlled directly by a GPIO pin due to its lower 
+voltage and current requirements. When paired with a 50$\Omega$ resistor, the LED emits sufficient brightness, even in 
+well-lit conditions. However, ultimately, it was deemed unnecessary and excluded from the final design.
+
+
 \subsection{Considerations}
 
 The initial prototype incorporated two NFC modules, as can be seen on figure \ref{fig:breadboard1}, intending to use one 
