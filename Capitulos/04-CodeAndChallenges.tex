@@ -1,2 +1,103 @@
 \chapter{Code Implementation and Development Challenges}
 \label{cap:codeAndChallenges}
+
+The software development phase represents a significant portion of the project timeline, demanding 
+meticulous attention to detail and thorough problem-solving skills. In the forthcoming sections, 
+an overview of the software requirements will be provided, shedding light on how these 
+requirements were effectively addressed. Additionally, detailed insights into the encountered 
+challenges and the corresponding solutions devised will be explored.
+
+One crucial decision made early on was the selection of CircuitPython as the programming language 
+for the device. This decision stemmed from several key factors, including its open-source nature, 
+extensive library support, and the availability of pre-existing libraries with MIT licenses, 
+particularly those essential for handling NFC readers. Furthermore, CircuitPython's user-friendly 
+syntax and simplified microcontroller programming paradigm were deemed advantageous compared to 
+alternatives like MicroPython, contributing to smoother development workflows.
+
+However, it's important to note that despite the benefits of CircuitPython, the project encountered 
+limitations imposed by the microcontroller's memory capacity, capped at 256kB. This constraint was 
+exacerbated by the use of Python, a high-level language known for its memory-intensive nature. 
+Throughout the development process, various memory optimization strategies were implemented to 
+mitigate these limitations. These optimizations will be thoroughly explained, providing valuable 
+insights into managing resource constraints in microcontroller-based projects.
+
+In addition to the aforementioned aspects, it's crucial to highlight the iterative nature of 
+software development, where frequent testing, debugging, and refinement cycles were integral to 
+achieving desired functionality and performance. This iterative approach enabled the project team 
+to address emerging issues promptly and iteratively enhance the software's robustness and 
+reliability.
+
+Furthermore, a detailed examination of the software architecture and design decisions made will 
+offer valuable insights into the project's development methodology and the rationale behind 
+specific implementation choices.
+
+\section{CircuitPython: Advantages and Disadvantages}
+
+CircuitPython is an open-source programming language designed specifically for 
+microcontroller-based development. Developed primarily by Adafruit Industries, CircuitPython is 
+built on top of the Python programming language, offering a simplified yet powerful platform for 
+programming microcontrollers. Unlike traditional embedded programming languages, CircuitPython 
+abstracts many low-level complexities, making it more accessible to beginners and hobbyists while 
+still providing advanced features for experienced developers.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width = .5\textwidth]{Imagenes/Vectorial/circuitpython_logo.pdf}
+	\caption{CircuitPython's logo}
+	\label{fig:circuitpython_logo}
+\end{figure}
+
+One of the key advantages of CircuitPython is its user-friendly syntax and high-level abstractions, 
+which resemble those of Python, a language renowned for its readability and simplicity. This makes 
+CircuitPython particularly attractive to beginners and educators, enabling them to quickly grasp 
+programming concepts and develop projects without being bogged down by intricate syntax or complex 
+setup procedures.
+
+Furthermore, CircuitPython simplifies the process of interacting with hardware peripherals and 
+sensors commonly used in embedded systems. It provides a consistent and intuitive API (Application 
+Programming Interface) for accessing GPIO pins, I2C and SPI interfaces, analog inputs, and other 
+hardware features, streamlining the development process and reducing the learning curve associated 
+with embedded programming.
+
+Another notable advantage of CircuitPython is its extensive library support, particularly for 
+popular microcontroller boards and peripherals. Adafruit maintains a vast repository of 
+CircuitPython libraries, covering a wide range of sensors, displays, actuators, communication 
+modules, and other components commonly used in electronics projects\footnote{Adafruit's Library 
+Bundle: \url{https://github.com/adafruit/Adafruit_CircuitPython_Bundle}}. These libraries abstract 
+the complexities of interfacing with specific hardware, allowing developers to focus on application 
+logic rather than low-level hardware details.
+
+Despite its numerous advantages, CircuitPython does have some limitations and drawbacks. One 
+notable limitation is its higher memory footprint compared to lower-level languages like C or 
+assembly, which can be a concern for projects with strict memory constraints. Additionally, while 
+CircuitPython abstracts many hardware complexities, it may sacrifice some performance compared to 
+bare-metal or lower-level programming approaches.
+
+Overall, CircuitPython offers a compelling combination of simplicity, accessibility, and 
+versatility for microcontroller-based development, making it an excellent choice for a wide range 
+of projects, from educational endeavors to commercial products. Its rich ecosystem of libraries, 
+ease of use, and strong community support contribute to its popularity among hobbyists, educators, 
+and professional developers alike\cite{circuitpython_docs}.
+
+For this project, CircuitPython version 9.0.0 will be used.
+
+\section{Requirements}
+
+\section{Code Implementation}
+
+\subsection{Asynchronous Programming}
+
+\subsection{Main Loop and Operating Modes}
+
+\subsection{Interchangeable WiFi and Cellular Data Operation}
+
+
+\section{Challenges}
+
+\subsection{SIM7020E Module}
+
+\subsection{Memory Constraints and SSL Certificates}
+
+\subsection{NFC Reader Unresponsiveness}
+
+\subsection{Storage}
