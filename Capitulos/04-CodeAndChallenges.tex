@@ -81,7 +81,47 @@ and professional developers alike\cite{circuitpython_docs}.
 
 For this project, CircuitPython version 9.0.0 will be used.
 
-\section{Requirements}
+\section{Code Requirements}
+
+The device must prioritize responsiveness and intuitive usability for all employees. This ensures 
+that the device can be easily operated by users of varying technical proficiency levels, promoting 
+efficient and accurate clocking processes.
+
+Furthermore, the device must maintain the highest possible uptime to ensure continuous operation 
+without interruptions. This is crucial for accurate time tracking and prevents any disruptions that 
+could lead to discrepancies in employee attendance records.
+
+Data integrity is of paramount importance, as any loss of data could result in unfair deductions 
+from employees' wages. Therefore, the device must be designed to prevent data loss under any 
+circumstances, even in the event of power outages or connectivity issues. It should have the 
+capability to store clockings locally and reliably transmit them to the server once connectivity is 
+restored.
+
+In situations where internet connectivity is temporarily lost, the device must continue to store 
+clockings and transmit them as soon as connectivity is regained. This ensures that no clocking data 
+is lost and enables seamless operation regardless of network conditions.
+
+Efficient data transmission is essential for real-time monitoring and analysis of employee 
+attendance. Therefore, the device should send clocking data as soon as it is available, without any 
+delays, to ensure timely reporting and accurate statistics.
+
+Flexibility is also key, as the device must be capable of operating using either WiFi or cellular 
+data connectivity, depending on the specific configuration and deployment requirements.
+
+Moreover, the device should incorporate a mode-switching feature, allowing it to display relevant 
+information such as the device's ID and enabling easy implementation of additional modes in the 
+future. This ensures scalability and adaptability to changing needs and requirements.
+
+Additionally, the device must display the current time on the screen to provide users with 
+real-time information and facilitate accurate clocking processes.
+
+To enhance user experience and ensure successful clocking operations, the device should provide 
+visual and audible cues to indicate successful clockings. It should also alert users to errors, 
+such as attempting to clock in multiple times with the same keycard.
+
+Finally, all clocking data should be securely transmitted to an API using POST requests, ensuring 
+that it is reliably delivered to the server for processing and storage. This maintains data 
+integrity and enables seamless integration with existing systems and workflows.
 
 \section{Code Implementation}
 
@@ -91,8 +131,9 @@ For this project, CircuitPython version 9.0.0 will be used.
 
 \subsection{Interchangeable WiFi and Cellular Data Operation}
 
-
 \section{Challenges}
+
+\subsection{Lack of Multithreading}
 
 \subsection{SIM7020E Module}
 
