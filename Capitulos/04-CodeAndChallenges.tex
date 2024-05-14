@@ -123,19 +123,56 @@ Finally, all clocking data should be securely transmitted to an API using POST r
 that it is reliably delivered to the server for processing and storage. This maintains data 
 integrity and enables seamless integration with existing systems and workflows.
 
+
 \section{Code Implementation}
 
 \subsection{Asynchronous Programming}
 
+Asynchronous programming is a programming paradigm that allows multiple tasks to be executed 
+concurrently, without the need for explicit parallelism or multithreading. It enables programs to 
+perform non-blocking operations, where tasks can be started and completed independently of each 
+other, leading to improved performance and responsiveness.
+
+In CircuitPython, asynchronous programming is achieved using the \texttt{asyncio} module, which 
+provides a framework for writing asynchronous code using coroutines. Coroutines are functions 
+that can be paused and resumed during execution, allowing for efficient task scheduling and 
+coordination.
+
+The key concept in asynchronous programming in Python is the \texttt{async} and \texttt{await} 
+keywords. Functions defined with the \texttt{async} keyword are called asynchronous functions, and 
+they can be paused with the \texttt{await} keyword when they encounter an operation that may block, 
+such as I/O operations or network requests.
+
+When an asynchronous function is awaited, it returns control to the event loop, allowing other 
+tasks to continue executing in the meantime. Once the awaited operation completes, the function 
+resumes execution from the point where it was paused.
+
+The event loop is a central component of asynchronous programming in Python and CircuitPython. It 
+manages the execution of asynchronous tasks and ensures that they are scheduled and executed 
+efficiently. The event loop continuously checks for tasks that are ready to run, executes them 
+until completion or until they are paused, and then moves on to the next task 
+\cite{circuitpython_docs}.
+
+The code extensively utilizes asynchronous programming to enhance the perception of concurrency 
+and prevent the device from becoming unresponsive. This is crucial, especially considering that the 
+device displays the time, including seconds, on the screen. However, while this approach offers 
+significant benefits, it also introduces certain drawbacks, which will be addressed later.
+
+Later on, this aspect will be further explored. Essentially, two tasks will run within the event 
+loop: one managing the main loop, waiting for workers to approach the device with their keycards, 
+while the other will handle the transmission of clockings to the internet.
+
 \subsection{Main Loop and Operating Modes}
 
+
+
 \subsection{Interchangeable WiFi and Cellular Data Operation}
+
+\subsection{SIM7020E Module}
 
 \section{Challenges}
 
 \subsection{Lack of Multithreading}
-
-\subsection{SIM7020E Module}
 
 \subsection{Memory Constraints and SSL Certificates}
 
