@@ -353,7 +353,72 @@ to unforeseen setbacks, each hurdle provided an opportunity for problem-solving 
 
 \subsection{Lack of Multithreading}
 
+While CircuitPython incorporates asynchronous programming via the \texttt{asyncio} library, it's 
+essential to note that this differs from traditional multithreading, a feature that is in fact 
+supported by MicroPython. Asynchronous programming with \texttt{asyncio} allows for concurrent 
+execution of tasks, but it operates within a single thread, managing task switching based on 
+input/output operations or explicit yields. In contrast, multithreading involves the simultaneous 
+execution of multiple threads, each running independently and potentially executing different code 
+segments concurrently.
+
+One significant challenge arises from the nature of CircuitPython's asynchronous programming model. 
+While \texttt{asyncio} allows for the concurrent execution of tasks within a single thread, certain 
+code segments lacking explicit yields may monopolize the event loop, hindering task switching and 
+potentially causing sluggish performance. This becomes particularly evident in scenarios where 
+tasks, such as establishing a WiFi connection, encounter delays. In such cases, where CircuitPython 
+lacks native support for asynchronous WiFi operations, the device may become unresponsive for 
+extended periods, up to 15 seconds, before timing out.
+
+Regrettably, there exists no straightforward solution to address this challenge within the current 
+framework. A potential avenue for improvement involves migrating the codebase to MicroPython, which 
+offers multithreading capabilities. However, this approach necessitates significant reworking of 
+existing libraries, presenting a formidable task exacerbated by time and budget constraints.
+
 \subsection{Memory Constraints and SSL Certificates}
+
+Python's inherent memory footprint, compared to C, is often larger, which poses a challenge given 
+the limited 256kB of RAM available. Upon loading CircuitPython during startup, approximately 120kB 
+of memory remains free. However, once all libraries are loaded and devices initialized, this 
+dwindles to around 60kB.
+
+While this may seem sufficient, complications arise when attempting to send a POST request to an 
+HTTPS server over WiFi. SSL certificate validation requires a minimum of 60kB of available memory, 
+dangerously close to the device's operational limit. The lack of descriptive error messages 
+compounds this issue, necessitating extensive investigation to decipher the underlying problem. 
+Anecdotal evidence suggests that errors may occur when available memory dips below 42kB 
+\cite{ssl_memoryerror}, though during testing, errors consistently manifested when nearing the 60kB 
+threshold. This discrepancy may be attributed to various factors, including CircuitPython version 
+and memory fragmentation.
+
+To mitigate memory constraints, a strategy was devised to import libraries only when needed. For 
+instance, if the device operates in WiFi mode, code related to the SIM7020E module remains dormant. 
+Additionally, the garbage collector is called upon constantly to minimize memory fragmentation and 
+ensure sufficient space for SSL certificates.
+
+During testing, the following errors were encountered:
+
+\begin{itemize}
+	\item When available memory is insufficient by a big margin:
+	
+	\begin{tabular}{l}
+		\texttt{x509-crt-bundle:PK verify failed with error FFFFBD70} \\
+		\texttt{x509-crt-bundle:Failed to verify certificate} \\
+		\texttt{Exception: <class 'RuntimeError'> Error connecting socket:} \\
+		\texttt{ (-12288, 'MBEDTLS\_ERR\_X509\_FATAL\_ERROR')}
+	\end{tabular}
+
+	\item When available memory is nearly adequate but still falls short a regular 
+	\texttt{MemoryError}.
+\end{itemize}
+
+In testing, it was challenging to ascertain the precise threshold between encountering the two 
+errors. However, observations indicated that the first error surfaced at approximately 50kB or 
+below, while a MemoryError occurred within the range of 50kB to 60kB.
+
+Addressing this challenge proves daunting, as memory optimization can only achieve so much, and the 
+alternative—removing code to reduce functionality—is undesirable.
+
+
 
 \subsection{NFC Reader Unresponsiveness}
 
