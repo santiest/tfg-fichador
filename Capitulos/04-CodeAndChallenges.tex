@@ -164,13 +164,192 @@ while the other will handle the transmission of clockings to the internet.
 
 \subsection{Main Loop and Operating Modes}
 
+The main loop executes functions on the current operating mode. These modes, essentially Python 
+classes, implement an interface containing four functions:\\ \texttt{enter\_mode}, 
+\texttt{exit\_mode}, \texttt{card\_received}, and \texttt{no\_card\_found}. Depending on the event, 
+one or more of these functions may be invoked.
 
+Initially, the device starts in a default mode. When the ``configuration keycard'' is detected by 
+the NFC reader, the mode transitions to a different one, triggering the \texttt{exit\_mode} 
+function on the mode that is being exited, and \texttt{enter\_mode} in the mode that entered 
+execution.
+
+As part of its operation, the NFC reader is configured with a timeout to detect the presence of any 
+card near its antenna. Upon successful detection, it reads the UID of the card.
+
+Additionally, the main loop is responsible for sending a periodic ``keepalive'' message to the 
+server to maintain connectivity.
 
 \subsection{Interchangeable WiFi and Cellular Data Operation}
 
+In certain deployment locations, access to WiFi may not always be available. Furthermore, even in 
+areas with existing WiFi coverage, circumstances can change, requiring the device to be relocated 
+to areas without such connectivity. In such scenarios, cellular data operation becomes essential.
+
+To facilitate internet usage, an interface was created with fundamental functions for internet 
+communication. Essentially, the primary requirement was the capability to send POST requests, or a 
+series of them. Consequently, two classes were designed to adhere to this interface: one serving as 
+a controller for WiFi connectivity, and the other for the SIM7020E module.
+
+Either of these controllers could be employed seamlessly, with the device operating without any 
+noticeable difference.
+
+Regarding the WiFi functionality, Adafruit offers comprehensive code for executing requests via 
+WiFi under an MIT license. This code was subsequently modified to operate asynchronously, aiding in 
+preventing device hang-ups. Details regarding the SIM7020E code will be provided in the subsequent 
+subsection.
+
+
 \subsection{SIM7020E Module}
 
+The SIM7020E module, which facilitates cellular data connectivity, operates using 
+\textit{AT commands}.
+
+AT commands, short for ``Attention commands'', are a standardized set of instructions used to 
+communicate with modems, including those integrated into cellular modules like the SIM7020E. These 
+commands are typically sent from a host device, such as a microcontroller or computer, to the modem 
+via a serial communication interface (such as \textit{UART}, which is the case for this Waveshare 
+board).
+
+AT commands follow a specific syntax, starting with the characters ``AT'' (hence the name), 
+followed by a command mnemonic and optional parameters. They are used to configure various 
+settings, initiate actions (such as making a phone call, sending a text message or sending a POST 
+request), query status information, and handle other modem-related tasks.
+
+For example, to check the signal strength of a cellular connection, the command ``AT+CSQ'' may be 
+sent to the modem, which would respond with a value indicating the signal quality. Similarly, to 
+establish a data connection, the command ``AT*MCGDEFCONT'' may be used, followed by parameters 
+specifying the APN (Access Point Name) and other connection details. It is worth noting that some 
+of these commands may vary depending on the module used, and some are manufacturer specific 
+\cite{sim7020e_atcommandsmanual}.
+
+AT commands provide a standardized interface for interacting with modems, allowing developers to 
+integrate modem functionality into their applications without needing to understand the intricacies 
+of the underlying hardware.
+
+SIMCOM offers a specific manual for the SIM7020E, delineating the AT commands, their parameters, 
+usage instructions, and responses. This manual proved indispensable for using the module, 
+especially considering the scarcity of code examples available online for this specific module, 
+apart from the brief code snippets provided by Waveshare as illustrative examples.
+
+Commands are transmitted to the transmit UART buffer, where they await processing by the SIM7020E 
+module. Following a command transmission, the module responds, and its responses are stored in the 
+designated memory region allocated for the receive UART buffer.
+
+Subsequently, the receive UART buffer must be periodically checked to ascertain whether the entire 
+response has been received. This periodic monitoring is essential since not all responses may be 
+promptly received without any delay, potentially leading to device hang-ups. This necessity for 
+asynchronous programming arose primarily from this requirement. Consequently, with asynchronous 
+programming implemented, a command is dispatched, and the response is continuously read until the 
+entire message is received, allowing for subsequent commands to be processed.
+
+It's crucial to note that only one ``thread'' is engaged in communication with the SIM7020E module, 
+obviating the need for locks or synchronization mechanisms to prevent the dispatch of additional 
+commands while awaiting a response. Such simultaneous command dispatch would risk causing errors 
+within the module.
+
+Certain commands, particularly those related to establishing connections with the internet and 
+external servers, inherently entail longer execution times, necessitating longer wait times during 
+the response retrieval process.
+
+Regarding POST requests, a sequential series of steps must be meticulously followed to ensure 
+successful transmission. These steps will be explained to provide a clearer understanding of the 
+module's interaction mechanisms.
+
+\subsubsection*{CHTTPCREATE}
+First, an HTTP or HTTPS client instance must be created within the module. Here, the host is 
+specified:
+\begin{center}
+	\texttt{AT+CHTTPCREATE="https://example.com"}
+\end{center}
+And after waiting for the corresponding response, the following will be read:
+\begin{center}
+	\texttt{+CHTTPCREATE: 0\textbackslash r\textbackslash n\textbackslash r\textbackslash
+	nOK\textbackslash r\textbackslash n}
+\end{center}
+
+Notice the appearance of ``\texttt{\textbackslash r}'' and ``\texttt{\textbackslash n}'', due to 
+the use of Python's byte strings.
+
+Most commands end with the appearance of ``\texttt{OK\textbackslash r\textbackslash n}'', which 
+allows for easily checking if a command has finished executing, to then send the following one.
+
+\subsubsection*{CHTTPCON}
+The next step is to establish the HTTP connection with the server, by executing the following:
+\begin{center}
+	\texttt{AT+CHTTPCON=0}
+\end{center}
+
+Notice the ``0'' used in the command. That number has to be the same one as the one returned as a 
+response in the \texttt{CHTTPCREATE} command. What that number means, is the slot that the host is 
+occupying in the module's memory. In the SIM7020E, there can be only 5 hosts in total (numbers 0 
+to 4). Thus, by connecting to the index ``0'', the device will establish the connection with the 
+host just created.
+
+The following response will be received in case of success:
+\begin{center}
+	\texttt{\textbackslash r\textbackslash nOK\textbackslash r\textbackslash n}
+\end{center}
+
+\subsubsection*{CHTTPSEND}
+Now, the actual POST request can be sent. The structure of the command is the following: 
+``\texttt{AT+CHTTPSEND=<httpclient\_id>, <method>, <path>, <header>,\\<content\_type>, 
+<content\_string>}''.
+
+The values for this command will be the following:
+\begin{itemize}
+	\item \texttt{httpclient\_id}: ``0'', as explained before.
+	\item \texttt{method}: the number ``1'' corresponds to the POST method, as explained by the 
+	commands manual.
+	\item \texttt{path}: this is the endpoint. The host's URL must not be specified.
+	\item \texttt{header}: the header contents, encoded in hexadecimal.
+	\item \texttt{content\_type}: the content type, as in any regular POST request. For example: 
+	``application/json''.
+	\item \texttt{content\_string}: the data contained in the POST request, encoded in hexadecimal.
+\end{itemize}
+
+In the following example, the following headers will be sent, encoded in hexadecimal:
+
+\begin{tabular}{l}
+    \texttt{Accept: */*} \\
+    \texttt{Connection: Keep-Alive} \\
+    \texttt{User-Agent: RPI\_PICO}
+\end{tabular}
+
+And the following data:
+
+\begin{center}
+	\texttt{\{"data": "some information"\}}
+\end{center}
+
+This is the resulting command:
+
+\begin{tabular}{l}
+    \texttt{AT+CHTTPSEND=0,1,"/some\_endpoint",} \\
+	\texttt{4163636570743a202a2f2aa436f6e6e656374696f6e3a204b65657} \\
+	\texttt{02d416c697665a557365722d4167656e743a205250495f5049434fa,} \\
+	\texttt{"application/json",} \\
+	\texttt{7b2264617461223a22736f6d6520696e666f726d6174696f6e227d}
+\end{tabular}
+
+\subsubsection*{CHTTPDISCON}
+The last command to be executed is the disconnection from the HTTP server:
+\begin{center}
+	\texttt{AT+CHTTPDISCON=0}
+\end{center}
+
+The number sent in the command is a ``0'' again, and the response will be another OK. With this, 
+the POST request will have been sent, and the connection terminated.
+
+The HTTP field could be destroyed with the \texttt{CHTTPDESTROY} command, but this is not needed, 
+since it will be reused, and would only increase inefficiencies in sending a new request. In fact, 
+if there are many POST requests queued to be sent, then they could even be sent continuously before 
+sending the \texttt{CHTTPDISCON}.
+
 \section{Challenges}
+
+This section examines the challenges faced during the development process. From technical obstacles 
+to unforeseen setbacks, each hurdle provided an opportunity for problem-solving and refinement.
 
 \subsection{Lack of Multithreading}
 
@@ -179,3 +358,8 @@ while the other will handle the transmission of clockings to the internet.
 \subsection{NFC Reader Unresponsiveness}
 
 \subsection{Storage}
+
+\subsection{Connecting to the Google Cloud Platform}
+
+
+\section{Overview}
