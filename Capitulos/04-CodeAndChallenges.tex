@@ -15,7 +15,7 @@ syntax and simplified microcontroller programming paradigm were deemed advantage
 alternatives like MicroPython, contributing to smoother development workflows.
 
 However, it's important to note that despite the benefits of CircuitPython, the project encountered 
-limitations imposed by the microcontroller's memory capacity, capped at 256kB. This constraint was 
+limitations imposed by the microcontroller's memory capacity, capped at 264kB. This constraint was 
 exacerbated by the use of Python, a high-level language known for its memory-intensive nature. 
 Throughout the development process, various memory optimization strategies were implemented to 
 mitigate these limitations. These optimizations will be thoroughly explained, providing valuable 
@@ -377,7 +377,7 @@ existing libraries, presenting a formidable task exacerbated by time and budget 
 \subsection{Memory Constraints and SSL Certificates}
 
 Python's inherent memory footprint, compared to C, is often larger, which poses a challenge given 
-the limited 256kB of RAM available. Upon loading CircuitPython during startup, approximately 120kB 
+the limited 264kB of RAM available. Upon loading CircuitPython during startup, approximately 120kB 
 of memory remains free. However, once all libraries are loaded and devices initialized, this 
 dwindles to around 60kB.
 
@@ -407,7 +407,7 @@ During testing, the following errors were encountered:
 		\texttt{ (-12288, 'MBEDTLS\_ERR\_X509\_FATAL\_ERROR')}
 	\end{tabular}
 
-	\item When available memory is nearly adequate but still falls short a regular 
+	\item When available memory is nearly adequate but still falls short a regular\\ 
 	\texttt{MemoryError}.
 \end{itemize}
 
@@ -418,11 +418,61 @@ below, while a MemoryError occurred within the range of 50kB to 60kB.
 Addressing this challenge proves daunting, as memory optimization can only achieve so much, and the 
 alternative—removing code to reduce functionality—is undesirable.
 
-
-
 \subsection{NFC Reader Unresponsiveness}
 
+As detailed in Chapter 2 (see Chapter \ref{cap:breadboardPrototype}), during the later stages of 
+testing, a significant issue emerged with the NFC reader. It would abruptly cease responding to 
+requests until power was disconnected and reconnected. The only visible indication of this 
+malfunction was the erratic flickering of the red LED on the board.
+
+In software, the NFC reader would not trigger any error when polled solely for the presence of a 
+keycard nearby. Therefore, continuous polling of the PN532 for its firmware version was used to 
+ascertain its operational status. If it failed to respond, a reset was initiated with the 
+assistance of a transistor.
+
 \subsection{Storage}
+
+\subsubsection*{The problem}
+Due to the necessity of retaining all clockings until their transmission to the server and even 
+after system resets, the data had to be stored in the internal memory of the Raspberry Pi Pico. 
+Despite its ample 2-megabyte capacity, sufficient to accommodate tens of thousands of clockings, 
+the implementation was far from straightforward.
+
+Initially, the process seemed straightforward. However, CircuitPython imposes limitations on 
+writing to internal storage unless configured in the \texttt{boot.py} file, utilizing the 
+\texttt{storage.disable\_usb\_drive()} function. Unfortunately, activating this function disables 
+the Pi Pico's appearance as a drive on connected computers, thereby negating one of CircuitPython's 
+key advantages for rapid debugging against MicroPython. Consequently, file transfers were relegated 
+solely to the COM Port.
+
+Once this hurdle was overcome, clockings could be stored in the internal storage. However, a 
+critical scenario emerged: if the device experienced prolonged connectivity loss and accumulated 1 
+megabyte of clockings in internal storage, each clocking sent to the server necessitated removal 
+from internal storage. Given that stored clockings should be sent in order of arrival, that is, a 
+queue, the deletion process began with the first entry. Unfortunately, the provided filesystem 
+lacked a ``delete'' method to selectively remove file content, forcing the entire file's rewriting.
+
+This predicament not only engendered prolonged read and write times, potentially degrading flash 
+memory, but also posed a fundamental memory constraint. With the Pi Pico lacking 1 MB of RAM to 
+retain all data in memory simultaneously for file rewriting, the process proved doubly challenging.
+
+\subsubsection*{The solution}
+
+To address the storage issue, an algorithm was developed to create multiple files, each with a 
+fixed maximum number of clockings. For simplicity, let's assume each file holds up to 50 
+clockings, amounting to approximately 5kB per file.
+
+As clockings accumulate, new files are created, each containing 50 clockings. These files are 
+sequentially named starting from \texttt{file0} (e.g., \texttt{file0}, \texttt{file1}, 
+\texttt{file2},\\\dots, \texttt{fileN}). When connectivity is restored, the clockings are removed 
+from \texttt{file0} onward, maintaining a queue structure where the oldest entries are processed 
+first. After removing many of the oldest clockings, the file structure may be, for instance: 
+\texttt{file5},\dots, \texttt{fileN}, which has to be accounted for in the algorithm.
+
+This approach ensures that when a clocking is added or removed, the maximum amount of data handled 
+in memory at any given time is limited to 5kB. This data is then quickly rewritten to storage, 
+significantly reducing the risk of memory overload and enhancing system performance.
+
 
 \subsection{Connecting to the Google Cloud Platform}
 
