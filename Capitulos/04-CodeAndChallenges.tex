@@ -124,6 +124,38 @@ that it is reliably delivered to the server for processing and storage. This mai
 integrity and enables seamless integration with existing systems and workflows.
 
 
+
+%
+%	CODE OVERVIEW
+%
+
+\section{Overview}
+
+In this section, a brief overview of the main workings of the code will be provided, with more 
+detailed explanations to follow in subsequent sections.
+
+The code operates two main tasks running asynchronously, which share CPU time efficiently.
+
+\begin{itemize}
+	\item \textbf{Main Loop}: This task continuously listens for NFC cards. When a card is 
+	detected, it adds the clocking data to the device's storage. Additionally, this task 
+	periodically instructs the second task to send a "keepalive" message to the server.
+	\item \textbf{Data-Sending Task}: This task reads the device's storage for any stored 
+	clockings. When it finds clocking data, it sends a POST request to the server. This task 
+	manages all internet communications.
+\end{itemize}
+
+This division of labor ensures that the device remains responsive and does not hang. If a worker 
+had to wait for a POST request to complete before clocking in, the delay could range from 10 
+seconds to a few minutes (due to the NB-IoT's network slow responses), which is unacceptable. By 
+making the main loop independent from the data-sending task, the system maintains its 
+responsiveness and efficiency.
+
+
+%
+%	CODE IMPLEMENTATION
+%
+
 \section{Code Implementation}
 
 \subsection{Asynchronous Programming}
@@ -346,6 +378,12 @@ since it will be reused, and would only increase inefficiencies in sending a new
 if there are many POST requests queued to be sent, then they could even be sent continuously before 
 sending the \texttt{CHTTPDISCON}.
 
+
+
+%
+%	CODE CHALLENGES
+%
+
 \section{Challenges}
 
 This section examines the challenges faced during the development process. From technical obstacles 
@@ -476,5 +514,46 @@ significantly reducing the risk of memory overload and enhancing system performa
 
 \subsection{Connecting to the Google Cloud Platform}
 
+During initial testing with an API hosted on a local computer, connectivity issues were not 
+encountered. However, after deploying the API on the Google Cloud Platform (GCP), the SIM7020E 
+module began experiencing intermittent problems establishing the HTTP connection. Specifically, the 
+CHTTPCON command would occasionally error out, causing significant delays in sending POST requests.
 
-\section{Overview}
+Attempts to establish the connection varied widely, sometimes requiring anywhere from 1 to 40 
+attempts to successfully execute the CHTTPCON command. This inconsistent behavior severely slowed 
+down the data transmission process, necessitating an urgent resolution.
+
+After extensive testing over several months, it was determined that this issue was unique to the 
+GCP, particularly when using Google Cloud Functions. This discovery prompted a thorough 
+investigation into all potential causes, following every lead possible.
+
+Initially, a source suggested that the problem might be related to the lack of support for Server 
+Name Indication (SNI) by the SIM7020E module \cite{sim7020e_chttpconerror}. However, this theory 
+was initially dismissed since the issue was intermittent, which is not typical of a fundamental 
+incompatibility like SNI support.
+
+Complicating the investigation further, in some locations, the device could not connect to the GCP 
+at all, despite having internet access and being able to synchronize time with Google's time 
+servers. Meanwhile, other locations could establish connections after only a few attempts, 
+indicating a potential environmental or network-related factor.
+
+Signal quality and strength were also considered as possible culprits, but even with excellent 
+signal conditions, the connectivity issues persisted. Additionally, swapping SIM cards between 
+different operators appeared to affect the frequency of the problem. For instance, using Movistar 
+SIM cards resulted in more frequent failures, whereas a multi-operator provider, Diferenza, showed 
+fewer issues.
+
+Seeking a definitive answer, the team contacted SIMCOM, the manufacturer of the SIM7020E module. 
+SIMCOM's response was that Google had discontinued their IoT Cloud services, and they recommended 
+switching to Azure or AWS. They also mentioned that the SIM7020E module was discontinued, with the 
+SIM7022 as its successor, which after investigating this new variant, it turns out it supports SNI.
+
+Despite these insights, a clear resolution remains elusive. The most plausible speculation is that 
+the issue might indeed be related to SNI. The variability in GCP's internal server behavior could 
+mean that some instances of their servers require SNI, while others do not. This inconsistency 
+might explain the intermittent nature of the problem and its location-dependent variability.
+
+The next steps involve considering alternative hardware solutions. The SIM7022 module, which 
+supports SNI, could potentially resolve the issue, but it would require board-level modifications 
+beyond the team's current capabilities. Alternatively, the Waveshare module with the SIM7080G, 
+which also supports SNI, offers a more accessible but costlier solution.
