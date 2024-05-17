@@ -21,3 +21,144 @@ personal data, maintaining its security is paramount. By using an API, the devic
 to only sending data, without the ability to read any data. This ensures that even if the device 
 is compromised, the database credentials remain protected and the integrity of the personal data 
 is maintained.
+
+
+\section{Requirements and Design Decisions}
+
+This time, the requirements are straightforward. The API needs to receive a JSON payload via a 
+POST request, verify an API key, and process the data format to make it compatible with the 
+database. For instance, it adapts the time format sent by the RTC clock of the Pi Pico into the 
+format recognized by the database. This is more efficiently handled in an environment with 
+extensive library support, rather than on a microcontroller running CircuitPython. After 
+processing the data, the API must send it to the database and respond with an 
+\textit{HTTP 200 status} if the operation was successful.
+
+Given the team's prior experience with Java and the \textit{Spring Framework}, it was decided to 
+use Spring to quickly deploy the API. Spring is a comprehensive framework for enterprise Java 
+development, providing tools and features to build robust, scalable, and maintainable 
+applications. It offers extensive support for web development, including RESTful services, through 
+its Spring MVC module \cite{spring_docs}. By leveraging Spring, the team could efficiently create 
+a secure and reliable API.
+
+The code for the API was intentionally kept very simple to ensure ease of development and 
+maintenance. The first step involved creating the "Clocking" entity, which served as a model for 
+the data structure representing each clocking event. This entity allowed Spring to seamlessly 
+connect to the database, providing a straightforward way to store and retrieve clocking data.
+
+Spring Security was then configured to require an API key for authenticating requests. This setup 
+added an essential layer of security, ensuring that only authorized devices could send data to 
+the API. By using API keys, the system could verify the source of the requests, preventing 
+unauthorized access and potential data breaches.
+
+In more detail, the process involved defining the "Clocking" entity with appropriate fields such 
+as employee ID, timestamp, and any other relevant information. This entity was annotated with 
+\textit{JPA} (Java Persistence API) annotations to map it to the corresponding database table, 
+allowing Spring Data JPA to handle the \textit{CRUD} (Create, Read, Update, Delete) operations 
+automatically.
+
+For the security configuration, Spring Security was set up to intercept incoming HTTP requests and 
+validate the presence and correctness of the API key. This was achieved by defining a security 
+filter that checked the API key in the request headers and compared it against a predefined valid 
+key. If the key was missing or incorrect, the request was rejected with an appropriate HTTP error 
+code.
+
+
+\section{Containerizing the Java application with Docker}
+
+Containerizing is a method of packaging an application and its dependencies into a standardized 
+unit, called a container, which can run consistently across different computing environments. 
+This approach isolates the application from its environment, ensuring that it performs the same 
+regardless of where it is deployed. For this API, \textit{Docker} will be used to achieve 
+containerization.
+
+Docker is a platform that allows developers to automate the deployment of applications inside 
+lightweight, portable containers. A Docker container includes everything needed to run the 
+application: the code, runtime, libraries, and system tools.
+
+\subsubsection*{Advantages of Containerizing with Docker}
+
+\begin{itemize}
+    \item \textbf{Consistency Across Environments}: Containers ensure that the application runs 
+    consistently across various environments—development, testing, and production. This eliminates 
+    the common ``it works on my machine'' problem, as the container encapsulates all the 
+    dependencies and configurations.
+    \item \textbf{Simplified Deployment}: Docker containers can be easily deployed and managed. 
+    With Docker, new instances of the application can be spun up, scaled across multiple servers, 
+    and be updated with minimal downtime.
+    \item \textbf{Resource Efficiency}: Containers are lightweight and use system resources more 
+    efficiently than traditional virtual machines. Multiple containers can run on a single host 
+    without the overhead of a full-blown hypervisor, leading to better utilization of server 
+    resources.
+    \item \textbf{Isolation and Security}: Docker containers provide process and filesystem 
+    isolation, which enhances security. Applications running in separate containers are isolated 
+    from each other and from the host system, reducing the risk of conflicts and vulnerabilities.
+    \item \textbf{Portability}: Docker containers can run on any system that supports Docker, 
+    whether it's a developer's laptop, an on-premise server, or a cloud-based virtual machine. 
+    This portability simplifies moving applications between different environments.
+\end{itemize}
+
+These advantages significantly outweigh the minimal time required to configure and deploy the 
+container \cite{docker_benefits2} \cite{docker_benefits}.
+
+In fact, the only setup needed in particular for this project, was just creating its 
+\textit{Dockerfile}, which is used to create the \textit{image}, from which containers can be 
+created.
+
+\begin{tabular}{l}
+    \texttt{FROM eclipse-temurin:17-jdk-jammy} \\
+    \texttt{ARG JAR\_FILE} \\
+    \texttt{COPY build/libs/*.jar app.jar} \\
+    \texttt{ENTRYPOINT ["java","-jar","/app.jar"]}
+\end{tabular}
+
+After the Dockerfile is created, the \texttt{docker build} command can be called to create the 
+image \cite{docker_docs}.
+
+\begin{center}
+    \texttt{docker build -t fichador-api .}
+\end{center}
+
+Then, a container can be created from that image, starting an instance of it:
+
+
+\begin{tabular}{l}
+    \texttt{docker run -d -p 8080:8080} \\
+    \texttt{\ \ \ \ -v fichadorLogs:/logs --env-file ./.env} \\
+    \texttt{\ \ \ \ --rm --name api fichador-api}
+\end{tabular}
+
+With the \texttt{docker build} command, an image was created with the name ``fichador-api'', then, 
+with the \texttt{docker run} command, a container was started on the port 8080, storing the logs 
+in the \texttt{/logs} file, and using a \texttt{.env} file to initialize variables, such as the 
+database username and password. The container's name is ``api''.
+
+
+\section{Adaptation to Google Cloud Functions}
+
+Hosting an entire Docker container in the cloud can be quite expensive, especially if it needs to 
+run continuously. Given the simplicity of the API and its low resource requirements, this approach 
+is not cost-effective. Consequently, alternative hosting methods were explored. Since the company 
+already utilizes Google Cloud services, Google Cloud Functions was recommended as a suitable 
+solution.
+
+Google Cloud Functions is a serverless execution environment that enables the execution of code in 
+response to specific events without the need to manage or provision servers. It automatically 
+scales based on the load, ensuring that only the compute resources used during the execution of 
+the functions are paid for. This service is ideal for lightweight, event-driven applications, 
+offering a cost-effective and efficient solution for deploying small-scale APIs and microservices. 
+By using Google Cloud Functions, developers can concentrate on writing code while Google manages 
+the infrastructure, scaling, and availability \cite{google_cloud_functions}.
+
+Fortunately, Spring provides support for Google Cloud Functions. However, adapting the code was 
+not straightforward, and due to the lack of comprehensive documentation and code examples, it took 
+nearly a week to accomplish.The first challenge encountered was the scarcity of examples using 
+Gradle as a dependency manager for building a project on Cloud Functions. Consequently, the 
+project had to be migrated to Maven.Additionally, conventional Spring Controllers could no longer 
+be used and had to be transformed into a function format specified by Spring's documentation. This 
+format expects a specific input and output data type. In this case, the function received a 
+Clocking object and could output various response types, such as a simple string response like 
+"OK".
+
+A working prototype was successfully developed, but it is currently pending approval for use. 
+Executives have decided to use an existing API and make minor adaptations to fit the current use 
+case, rather than introducing entirely new code.
