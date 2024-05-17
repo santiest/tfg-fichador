@@ -1,2 +1,23 @@
 \chapter{API Development}
 \label{cap:apiDevelopment}
+
+After developing a basic working device, the next major milestone was enabling it to send data 
+over the internet. Achieving this milestone was crucial for demonstrating the project's 
+progress to executives, proving that the project is on track for success. Such progress not only 
+instills confidence in the project's viability but also helps secure additional financing for 
+further development. This financing is essential for acquiring necessary resources, such as a 3D 
+printer, which will be discussed in the next chapter.
+
+Developing an \textit{Application Programming Interface} (API) was a fundamental step in this 
+process. The API acts as an intermediary, facilitating communication between the device and a 
+database where clockings are stored. It ensures that data from the device is accurately and 
+efficiently transmitted to the database. This capability is vital for the real-time tracking and 
+management of employee clockings, which forms the core functionality of the device.
+
+This approach adds an extra layer of security. The alternative—directly inserting clockings into 
+the database—would pose a significant security risk. If someone were to open the device and access 
+its code, they could potentially see the database credentials. Given that the database contains 
+personal data, maintaining its security is paramount. By using an API, the devices are restricted 
+to only sending data, without the ability to read any data. This ensures that even if the device 
+is compromised, the database credentials remain protected and the integrity of the personal data 
+is maintained.
