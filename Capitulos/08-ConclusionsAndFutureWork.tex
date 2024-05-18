@@ -1,7 +1,78 @@
 \chapter{Conclusions and Future Work}
 \label{cap:conclusions}
-% \addcontentsline{toc}{chapter}{Conclusions and Future Work}
 
-% Conclusions and future lines of work. This chapter contains the translation of Chapter \ref{cap:conclusiones}.
+The project has been a great success and is currently being rolled out to production. This 
+achievement marks a significant milestone in the pursuit of creating a more cost-effective and 
+durable solution for employee clocking systems.
+
+In conclusion, the development process—from the initial concept through to the final 
+deployment—has demonstrated the effectiveness of meticulous planning, innovative design, and 
+iterative testing. Key accomplishments of the project include:
+
+\begin{itemize}
+    \item \textbf{Cost Efficiency}: The newly developed system significantly reduces costs 
+    compared to the previous solution using mobile phones. By utilizing a Raspberry Pi Pico and 
+    custom-designed enclosures, the project has lowered both initial and long-term expenses.
+    \item \textbf{Enhanced Longevity}: The robust design of the new device promises a much longer 
+    lifespan than the mobile phones previously used. The components are expected to last at least 
+    three years, and in case of any failure, individual parts can be replaced rather than 
+    discarding the entire device.
+    \item \textbf{Customizability and Flexibility}: The modular nature of the system allows for 
+    easy upgrades and customization. This adaptability ensures the system can evolve with changing 
+    technological requirements and company needs.
+    \item \textbf{Improved Reliability}: The new enclosure and internal design provide superior 
+    protection against environmental factors, such as heat and impact, which plagued the mobile 
+    phone-based solution.
+    \item \textbf{Advanced Functionality}: The integration with Google Cloud Platform and the use 
+    of Spring for API development have ensured a seamless and secure data transmission process, 
+    enhancing the overall functionality and reliability of the system.
+\end{itemize}
+
+The project's success underscores the importance of selecting appropriate materials, technologies, 
+and design methodologies. The choice of PETG for the enclosure, the adoption of 3D printing for 
+rapid prototyping, and the iterative design process have all contributed to the creation of a 
+highly effective solution.
+
+As the rollout continues, ongoing monitoring and feedback will be essential to ensure the system 
+meets all operational requirements and continues to perform as expected. Future improvements may 
+include further optimization of the design, enhancements in software functionality, and potential 
+expansion of the system's capabilities.
+
+This thesis not only documents the journey from concept to deployment but also serves as a guide 
+for similar projects aiming to leverage technology for practical, cost-effective solutions. The 
+insights gained and the methodologies developed during this project can be applied to a wide range 
+of applications beyond employee clocking systems, demonstrating the broader impact and potential 
+of this work.
 
 
+\section{Future Work}
+
+The development of this project is still ongoing, with new improvements being added on a daily 
+basis. There is a comprehensive roadmap for future development, including implementing remote 
+updates for the device's code, which will significantly enhance its maintainability and 
+flexibility.
+
+Very shortly, the devices will be updated to periodically send "keepalive" messages to the server. 
+These messages will not only confirm that the device is operational but will also report any 
+ongoing hardware issues. This proactive approach will enable quick identification and resolution 
+of potential problems, ensuring the devices operate smoothly and reliably.
+
+However, several challenges remain. The limited memory capacity of the Raspberry Pi Pico and the 
+intermittent connectivity issues with Google Cloud have been significant obstacles. Addressing 
+these problems is not straightforward, but overcoming them could unlock immense future 
+opportunities.
+
+The optimal solution to these issues involves designing a custom PCB that integrates both the 
+microcontroller and the cellular connectivity module. This ambitious endeavor would require months 
+of meticulous planning, prototyping, and testing, but it would represent a substantial upgrade to 
+the current system.
+
+Additionally, it is likely that the microcontroller will need to be upgraded to a model with 
+greater memory capacity, such as the ESP32-S3. The ESP32-S3 not only offers more memory but also 
+provides similar functionality, making it a suitable replacement for the Raspberry Pi Pico.
+
+While the process of designing this integrated PCB has not yet begun, and discussions about its 
+feasibility are ongoing, it is clear that such a development would greatly enhance the device's 
+capabilities. This future work promises to further improve the reliability, efficiency, and 
+overall performance of the system, building on the significant advantages already realized in the 
+current project.
