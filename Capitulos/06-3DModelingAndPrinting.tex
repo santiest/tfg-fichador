@@ -410,13 +410,24 @@ for easier removal of the completed prints.
 
 \subsubsection{Slicing the 3D Model}
 
-Before sending a 3D model to a 3D printer for fabrication, it must go through a crucial step known as slicing. Slicing is the process of converting a 3D model (typically in STL format) into a set of instructions (G-code) that a 3D printer can understand. This G-code provides specific instructions on how the printer should move its print head and build platform to create the desired object layer by layer.
+Before sending a 3D model to a 3D printer for fabrication, it must go through a crucial step known 
+as slicing. Slicing is the process of converting a 3D model (typically in STL format) into a set 
+of instructions (G-code) that a 3D printer can understand. This G-code provides specific 
+instructions on how the printer should move its print head and build platform to create the 
+desired object layer by layer.
 
-A slicer software plays a central role in this process. It takes into account various parameters set by the user, such as layer height, infill density, print speed, and support structures, and generates the G-code accordingly. These parameters directly influence the quality, strength, and appearance of the final print.
+A slicer software plays a central role in this process. It takes into account various parameters 
+set by the user, such as layer height, infill density, print speed, and support structures, and 
+generates the G-code accordingly. These parameters directly influence the quality, strength, and 
+appearance of the final print.
 
-Different slicer software packages are available, each with its own set of features and capabilities. Some popular slicers include Ultimaker Cura, PrusaSlicer, Simplify3D, and Slic3r. These programs offer user-friendly interfaces and a range of customization options to optimize prints for specific materials, print quality, and printer hardware.
+Different slicer software packages are available, each with its own set of features and 
+capabilities. Some popular slicers include Ultimaker Cura, PrusaSlicer, Simplify3D, and Slic3r. 
+These programs offer user-friendly interfaces and a range of customization options to optimize 
+prints for specific materials, print quality, and printer hardware.
 
-For this project, PrusaSlicer was employed, as can be seen in Figures \ref{fig:prusaslicer_objects} and \ref{fig:prusaslicer_sliced}.
+For this project, PrusaSlicer was employed, as can be seen in Figures 
+\ref{fig:prusaslicer_objects} and \ref{fig:prusaslicer_sliced}.
 
 \begin{figure}[h]
     \centering
@@ -437,6 +448,19 @@ For this project, PrusaSlicer was employed, as can be seen in Figures \ref{fig:p
 
 \subsubsection{Printing and Post-Processing}
 
-With the 3D model sliced and the printer calibrated, the final step is straightforward: pressing start. Once the printing process is complete, the next task involves removing the supports from the backplate. These supports are necessary due to the recesses where the screws fit, which are elevated from the print bed.
+With the 3D model sliced and the printer calibrated, the final step is straightforward: pressing 
+start. Once the printing process is complete, the next task involves removing the supports from 
+the backplate. These supports are necessary due to the recesses where the screws fit, which are 
+elevated from the print bed.
 
+fter completing this post-processing step, the printed enclosure is ready for use. The successful 
+integration of the device into its newly printed enclosure can be seen in Figure 
+\ref{fig:device_in_enclosure}, demonstrating the practical realization of the design and 
+fabrication plan.
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width = .5\textwidth]{Imagenes/Vectorial/device_in_enclosure.pdf}
+	\caption{Device in its enclosure}
+	\label{fig:device_in_enclosure}
+\end{figure}
