@@ -1,2 +1,76 @@
 \chapter{Cost Analysis and Competitive Comparison}
 \label{cap:costAndCompetitiveAnalysis}
+
+The primary motivation for undertaking this project was to significantly reduce costs associated 
+with the previous solution, which relied on mobile phones. This chapter will provide a detailed 
+analysis of the costs incurred during the development and implementation of the new device, 
+alongside a comparison with the costs of the previous mobile phone-based solution. By examining 
+both the financial aspects and the competitive landscape, this analysis aims to demonstrate the 
+economic advantages of the newly developed system and its potential for broader application.
+
+\section{The Previous Solution}
+
+The previous solution for processing employee clock-ins involved using mobile phones mounted on 
+walls, equipped with an application from a software provider designed for this purpose. While the 
+application itself functioned effectively, the hardware presented significant issues. These 
+phones, which were constantly plugged into power sources and often exposed to direct sunlight, 
+suffered from severe battery degradation. Within six months, the batteries would swell and become 
+unusable, necessitating frequent replacements.
+
+Even if these phones were on the lower-end of performance, their cost was not negligible, and with 
+the need for replacements every six months, the expenses quickly escalated. Additionally, the 
+mounting cases used for the phones were notably brittle and unable to withstand impacts from 
+falls. Despite their cost not being nearly as high as the phones, they were too costly for the 
+purpose they served, adding to the overall expense and contributing to the recurring costs of 
+maintaining the system.
+
+This combination of frequent hardware failures and the associated costs highlighted the need for a 
+more durable and cost-effective solution, prompting the development of the new device detailed in 
+this project.
+
+\section{The Proposed Solution}
+
+The proposed solution aims not only to significantly reduce costs but also to greatly enhance the 
+longevity of the system. The new device is designed with durability and modularity in mind, 
+ensuring that it can withstand prolonged use and adverse conditions far better than the previous 
+phone-based system.
+
+It is estimated that the electronics in the device should last at least three years, a substantial 
+improvement over the six-month lifespan of the phones previously used. This extended longevity 
+translates into fewer replacements and lower long-term costs. Additionally, in the event of a 
+component failure, the modular design allows for the replacement of the specific faulty part 
+rather than discarding the entire device. This repairability further contributes to cost savings 
+and reduces electronic waste.
+
+By addressing both the economic and operational shortcomings of the previous system, the proposed 
+solution offers a more sustainable and efficient approach to managing employee clock-ins.
+
+\subsection{Pricing}
+
+To maintain confidentiality regarding proprietary costs, this analysis will focus exclusively on 
+the prices of publicly available parts. For example, while custom PCB costs are excluded due to 
+their sensitive nature, prices for readily available components such as the Raspberry Pi Pico, NFC 
+reader, and 3D printing materials will be included. This approach ensures that the analysis 
+remains transparent and informative without compromising any sensitive financial information.
+
+The table with approximate pricing for each component at the time of publication can be seen on 
+Table \ref{tab:pricing_table}. Consider that the enclosure's weight is significantly less than 1 
+kilogram, and that costs related to assembling the device and developing software are not being 
+included.
+
+
+\begin{table}
+	\centering
+	\begin{tabular}{c|c}
+		\textbf{Component} & \textbf{Approximate Cost} \\
+		\hline\hline
+		Raspberry Pi Pico WH & 8€\\
+		Waveshare SIM7020E Board & 20€\\
+		NFC Reader & 8€\\
+		LCD Display & 8€\\
+		1kg of PETG & 20€\\
+		\hline
+	\end{tabular}
+	\caption{Pricing table}
+	\label{tab:pricing_table}
+\end{table}
