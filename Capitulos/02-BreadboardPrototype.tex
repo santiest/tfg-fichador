@@ -31,14 +31,14 @@ Therefore, careful consideration is warranted to determine whether the additiona
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=.6\textwidth]{Imagenes/Vectorial/piZero2W.pdf}
-        \caption{Raspberry Pi Zero 2 W}
+        \caption{Raspberry Pi Zero 2 W. Image by Raspberry Pi licensed under CC BY-SA 4.0}
         \label{fig:piZero2W}
     \end{minipage}
     \hfill
     \begin{minipage}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=.6\textwidth]{Imagenes/Vectorial/piPicoWH.pdf}
-        \caption{Raspberry Pi Pico WH}
+        \caption{Raspberry Pi Pico WH. Image by Raspberry Pi licensed under CC BY-SA 4.0}
         \label{fig:piPicoWH}
     \end{minipage}
 \end{figure}
@@ -117,7 +117,7 @@ identify the available buses:
 \begin{figure}[h]
 	\centering
 	\includegraphics[width = 1\textwidth]{Imagenes/Vectorial/picow-pinout.pdf}
-	\caption{Raspberry Pi Pico W's Pinout}
+	\caption{Raspberry Pi Pico W's Pinout. Image by Raspberry Pi licensed under CC BY-SA 4.0}
 	\label{fig:piPicoPinout}
 \end{figure}
 
@@ -215,7 +215,13 @@ the project. However, such modules are not readily available on the market for s
 \textit{SIMCOM} does offer several variants of these modules with diverse capabilities, developing a custom solution would 
 necessitate significant investment in terms of both time and resources.
 
-However, the downside of this approach is that the module requires soldering of fourteen pins (the ones whose text is highlighted in white in Fig. \ref{fig:sim7020e_bottomview}), introducing an additional layer of complexity to the device assembly process. Furthermore, it is important to note the stacking headers featured in Figures \ref{fig:sim7020e_topview} and \ref{fig:sim7020e_bottomview}, which consist of female headers with extended male pins. These pins are designed to penetrate the PCB and connect to another female header underneath. While this setup may appear standard, improper soldering, with excess tin reaching too high on the male part of the header, can lead to faulty connections with the PCB or breadboard. Therefore, if the team intends to assemble the device on-site, careful soldering is a must.
+However, the downside of this approach is that the module requires soldering of fourteen pins (the ones whose text is 
+highlighted in white in Fig. \ref{fig:sim7020e_bottomview}), introducing an additional layer of complexity to the device 
+assembly process. Furthermore, it is important to note the stacking headers featured in Figures \ref{fig:sim7020e_topview} 
+and \ref{fig:sim7020e_bottomview}, which consist of female headers with extended male pins. These pins are designed to 
+penetrate the PCB and connect to another female header underneath. While this setup may appear standard, improper soldering, 
+with excess tin reaching too high on the male part of the header, can lead to faulty connections with the PCB or breadboard. 
+Therefore, if the team intends to assemble the device on-site, careful soldering is a must.
 
 \begin{figure}[h]
     \centering
@@ -266,7 +272,7 @@ conventionally maintained at \textit{0}x\textit{48} \cite{i2cdevices_pn532}.
 
 A matrix keyboard offers an alternative means for employees to clock in or out by entering a numeric code, which can be 
 particularly useful if an employee forgets or misplaces their card. The working principle of matrix keyboards is 
-straightforward: as illustrated in Figure \ref{fig:matrix_keypad_schematics}, they consist of intersecting rows and columns. 
+straightforward: they consist of intersecting rows and columns. 
 Each key on the keyboard is positioned at the intersection of a row and a column. When a key is pressed, it creates a 
 connection between a specific row and column, resulting in a unique electrical signal that can be interpreted by the 
 microcontroller.
@@ -278,13 +284,6 @@ microcontroller.
         \includegraphics[width=.8\textwidth]{Imagenes/Vectorial/matrix_keypad.pdf}
         \caption{Matrix keypad}
         \label{fig:matrix_keypad}
-    \end{minipage}
-    \hfill
-    \begin{minipage}[b]{0.45\textwidth}
-        \centering
-        \includegraphics[width=.8\textwidth]{Imagenes/Vectorial/matrix_keypad_schematics.pdf}
-        \caption{Matrix keypad's schematics}
-        \label{fig:matrix_keypad_schematics}
     \end{minipage}
 \end{figure}
 
