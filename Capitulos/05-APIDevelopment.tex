@@ -56,11 +56,11 @@ as employee ID, timestamp, and any other relevant information. This entity was a
 allowing Spring Data JPA to handle the \textit{CRUD} (Create, Read, Update, Delete) operations 
 automatically.
 
-For the security configuration, Spring Security was set up to intercept incoming HTTP requests and 
-validate the presence and correctness of the API key. This was achieved by defining a security 
-filter that checked the API key in the request headers and compared it against a predefined valid 
-key. If the key was missing or incorrect, the request was rejected with an appropriate HTTP error 
-code.
+For the security configuration, \textit{Spring Security} was set up to intercept incoming HTTP 
+requests and validate the presence and correctness of the API key. This was achieved by defining a 
+security filter that checked the API key in the request headers and compared it against a 
+predefined valid key. If the key was missing or incorrect, the request was rejected with an 
+appropriate HTTP error code.
 
 
 \section{Containerizing the Java application with Docker}
@@ -151,14 +151,24 @@ the infrastructure, scaling, and availability \cite{google_cloud_functions}.
 
 Fortunately, Spring provides support for Google Cloud Functions. However, adapting the code was 
 not straightforward, and due to the lack of comprehensive documentation and code examples, it took 
-nearly a week to accomplish.The first challenge encountered was the scarcity of examples using 
+nearly a week to accomplish.
+
+The first challenge encountered was the scarcity of examples using 
 Gradle as a dependency manager for building a project on Cloud Functions. Consequently, the 
-project had to be migrated to Maven.Additionally, conventional Spring Controllers could no longer 
+project had to be migrated to Maven.
+
+Additionally, conventional Spring Controllers could no longer 
 be used and had to be transformed into a function format specified by Spring's documentation. This 
 format expects a specific input and output data type. In this case, the function received a 
 Clocking object and could output various response types, such as a simple string response like 
 ``OK''.
 
+Another problem was that it seems Spring was not able to read the JSON in the POST request and 
+encode it into a Spring Entity. For this reason, a simpler class was added, which would be 
+automatically parsed from the JSON in the POST request, and then be manually converted to an 
+actual Spring Entity inside the function's code. In this way, it could be persisted to the 
+database.
+
 A working prototype was successfully developed, but it is currently pending approval for use. 
-Executives have decided to use an existing API and make minor adaptations to fit the current use 
-case, rather than introducing entirely new code.
+For security reasons, executives have decided to use an existing API and make minor adaptations to 
+fit the current use case, rather than introducing entirely new code.
