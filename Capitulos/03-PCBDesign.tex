@@ -55,15 +55,8 @@ and minimal interference.
 
 \section{Designing the PCB}
 
-Now that the perfboard provided a good idea of how the PCB would be, now it has to be properly designed. 
-As it could be seen before, the perfboard's main job was to bring all components together, and that will 
-also be the case for the PCB. It would give a much cleaner look than the perfboard, and be much more 
-comfortable to plug components into, since on the perfboard traces could not overlap, limiting design 
-possibilities. Now, with a multi-layer PCB, traces could go above and below each other, allowing for the 
-placement continuous male headers for each component.
-
 Having used the perfboard as a preliminary platform to consolidate components and understand the spatial 
-dynamics of the circuit, the focus now shifts towards the meticulous design of the printed circuit board 
+dynamics of the circuit, the focus now shifts towards the design of the \textit{printed circuit board} 
 (PCB).
 
 The primary function of the PCB mirrors that of the perfboard: to integrate and interconnect all 
@@ -116,8 +109,8 @@ to the final product.
 
 A few considerations regarding part selection:
 \begin{itemize}
-    \item Since active buzzers can only be turned on or off, the sound's frequency is already pre-determined. 
-    This has to be taken into consideration when choosing one.
+    \item Since active buzzers can only be turned on or off, the sound's frequency is already pre-determined, 
+    and cannot be changed. This has to be taken into consideration when choosing one.
     \item The transistor responsible for controlling power to the buzzer must meet the power specifications 
     and respond to changes in voltage from a GPIO pin (3.3V). Fortunately, given that the voltage at the 
     drain is 5V and the current is in the milliamp range, virtually any transistor would be suitable for 
@@ -152,9 +145,50 @@ During the ordering process, a 3D model of the PCB with the selected parts is di
 \ref{fig:pcb_topview} and \ref{fig:pcb_bottomview}. It's important to note that the PCBs are manufactured in 
 China and then shipped internationally. Factors such as import tariffs and shipping costs need to be taken 
 into account. Despite these considerations, the price remained competitive compared to local alternatives, 
-even after factoring in customs duties and shipping fees. Remarkably, the PCBs arrived within a week of 
+even after factoring in customs' duties and shipping fees. Remarkably, the PCBs arrived within a week of 
 ordering.
 
 The quality of construction exceeded expectations, with all components fitting perfectly on the first try. 
 The selected buzzer emitted the expected pitch, and everything functioned as intended. Executives were 
 pleasantly surprised by the remarkably low price per unit.
+
+
+\subsection*{Solving the Problem with the NFC Reader}
+
+As discussed before, the NFC reader needs to be periodically reset by cutting its power supply and 
+restoring it after a few miliseconds.
+
+Unfortunately, this was discovered after 25 units of the PCB were produced. In order to reduce waste, it 
+was decided that all the PCBs would be fixed by adding a transistor to each of them. Additionally, to 
+control this transistor, a resistor needs to be placed between the gate and the Pi Pico's GPIO pin that 
+controls it. This can be seen in Figures \ref{fig:pcb_fix_3}, \ref{fig:pcb_fix_2} and \ref{fig:pcb_fix_1}.
+
+In this way, the transistor can interrupt power from the ground pin on the Pi Pico, to the ground pin on 
+the PN532 board.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.9\textwidth]{Imagenes/Vectorial/pcb_fix_3.pdf}
+        \caption{PCB fixed on helping hands}
+        \label{fig:pcb_fix_3}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=.9\textwidth]{Imagenes/Vectorial/pcb_fix_2.pdf}
+        \caption{PCB's back side after being modified}
+        \label{fig:pcb_fix_2}
+    \end{minipage}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.7\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{Imagenes/Vectorial/pcb_fix_1.pdf}
+        \caption{PCB's top side after being modified}
+        \label{fig:pcb_fix_1}
+    \end{minipage}
+\end{figure}

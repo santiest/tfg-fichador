@@ -139,7 +139,7 @@ The code operates two main tasks running asynchronously, which share CPU time ef
 \begin{itemize}
 	\item \textbf{Main Loop}: This task continuously listens for NFC cards. When a card is 
 	detected, it adds the clocking data to the device's storage. Additionally, this task 
-	periodically instructs the second task to send a "keepalive" message to the server.
+	periodically instructs the second task to send a ``keepalive'' message to the server.
 	\item \textbf{Data-Sending Task}: This task reads the device's storage for any stored 
 	clockings. When it finds clocking data, it sends a POST request to the server. This task 
 	manages all internet communications.

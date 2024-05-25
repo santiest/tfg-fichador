@@ -41,7 +41,7 @@ its Spring MVC module \cite{spring_docs}. By leveraging Spring, the team could e
 a secure and reliable API.
 
 The code for the API was intentionally kept very simple to ensure ease of development and 
-maintenance. The first step involved creating the "Clocking" entity, which served as a model for 
+maintenance. The first step involved creating the ``Clocking'' entity, which served as a model for 
 the data structure representing each clocking event. This entity allowed Spring to seamlessly 
 connect to the database, providing a straightforward way to store and retrieve clocking data.
 
@@ -50,7 +50,7 @@ added an essential layer of security, ensuring that only authorized devices coul
 the API. By using API keys, the system could verify the source of the requests, preventing 
 unauthorized access and potential data breaches.
 
-In more detail, the process involved defining the "Clocking" entity with appropriate fields such 
+In more detail, the process involved defining the ``Clocking'' entity with appropriate fields such 
 as employee ID, timestamp, and any other relevant information. This entity was annotated with 
 \textit{JPA} (Java Persistence API) annotations to map it to the corresponding database table, 
 allowing Spring Data JPA to handle the \textit{CRUD} (Create, Read, Update, Delete) operations 
@@ -157,7 +157,7 @@ project had to be migrated to Maven.Additionally, conventional Spring Controller
 be used and had to be transformed into a function format specified by Spring's documentation. This 
 format expects a specific input and output data type. In this case, the function received a 
 Clocking object and could output various response types, such as a simple string response like 
-"OK".
+``OK''.
 
 A working prototype was successfully developed, but it is currently pending approval for use. 
 Executives have decided to use an existing API and make minor adaptations to fit the current use 

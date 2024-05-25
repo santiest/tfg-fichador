@@ -53,7 +53,7 @@ A single-board computer (\textit{SBC}) is a complete computer built on a single 
 the necessary components required for a functional computer system, including a central processing unit (CPU), 
 memory (RAM), storage (usually in the form of a MicroSD card), input/output ports, and sometimes additional 
 features such as networking capabilities (e.g., Ethernet or WiFi), audio/video output, GPIO (General Purpose 
-Input/Output) pins for connecting external devices, and even USB ports.
+Input/Output) pins for connecting external devices, and even USB ports \cite{microcontroller_vs_sbc}.
 
 SBCs are designed to be compact and efficient, which is the case of the \textit{Pi Zero}, measuring about 65mm by 
 30mm while drawing about one Watt of power. Additionally, SBCs can run an operating system, such as Ubuntu.
@@ -73,7 +73,8 @@ communication with the mobile network, abstracting all these problems from the p
 A microcontroller is a compact integrated circuit (IC) that contains a central processing unit (CPU), memory (both 
 volatile RAM and non-volatile flash memory), input/output peripherals (such as digital and analog I/O pins), and 
 various other hardware components necessary for interfacing with external devices. Unlike single-board computers, 
-microcontrollers are typically designed for specific tasks and embedded applications, often with real-time requirements.
+microcontrollers are typically designed for specific tasks and embedded applications, often with real-time requirements
+\cite{microcontroller_vs_sbc}.
 
 One key characteristic of microcontrollers is their ability to execute dedicated firmware or software code stored in 
 their internal memory. This code typically controls the behavior of the microcontroller, processes inputs from sensors 
@@ -86,8 +87,8 @@ WiFi connectivity.
 
 In comparison to single-board computers, the \textit{Pi Pico} does not have an operating system. Instead, firmware can be 
 loaded onto it, and it is this firmware that provides functionality to the board. This firmware allows the programmer to 
-use programming languages such as C or MicroPython, which then control the microcontroller's behavior and interactions with 
-external devices.
+use programming languages such as \textit{C} or \textit{MicroPython}, which then control the microcontroller's behavior and 
+interactions with external devices.
 
 The absence of an operating system reduces the overhead associated with system management and resource allocation, resulting 
 in faster boot times and improved reliability for time-critical tasks.
@@ -109,10 +110,10 @@ Now that the microcontroller has been selected, additional components are necess
 Specifically, the device must integrate an NFC reader and an LCD screen. Additionally, other peripherals, such as a buzzer 
 or LED, may also be evaluated.
 
-We need to take into account the available buses and choose modules accordingly. Relying solely on the datasheet alone is 
+Available buses need to be taken into account to then choose modules accordingly. Relying solely on the datasheet alone is 
 not enough to determine the buses that are usable concurrently, since if two different buses use the same pin, then they 
-cannot be used simultaneously. Referring to the pinout diagram of the \textit{Raspberry Pi Pico W} provided below, we can 
-identify the available buses:
+cannot be used simultaneously. Referring to the pinout diagram of the \textit{Raspberry Pi Pico W} in Figure 
+\ref{fig:piPicoPinout}, available buses can be identified:
 
 \begin{figure}[h]
 	\centering
@@ -166,7 +167,7 @@ Beyond just relying on visual cues displayed on the screen to convey the device'
 the user experience by incorporating auditory feedback. When employees clock in to work, providing a distinct sound 
 signal from a buzzer ensures they receive immediate confirmation of their action.
 
-There are two types of buzzer:
+There are two types of buzzer \cite{buzzers_active_vs_passive}:
 \begin{itemize}
 	\item \textbf{Active buzzers}: they incorporate an internal oscillator circuit that generates the sound signal 
 	when voltage is applied. They are self-contained and do not require external circuitry to produce sound. They 
@@ -217,11 +218,11 @@ necessitate significant investment in terms of both time and resources.
 
 However, the downside of this approach is that the module requires soldering of fourteen pins (the ones whose text is 
 highlighted in white in Fig. \ref{fig:sim7020e_bottomview}), introducing an additional layer of complexity to the device 
-assembly process. Furthermore, it is important to note the stacking headers featured in Figures \ref{fig:sim7020e_topview} 
-and \ref{fig:sim7020e_bottomview}, which consist of female headers with extended male pins. These pins are designed to 
-penetrate the PCB and connect to another female header underneath. While this setup may appear standard, improper soldering, 
-with excess tin reaching too high on the male part of the header, can lead to faulty connections with the PCB or breadboard. 
-Therefore, if the team intends to assemble the device on-site, careful soldering is a must.
+assembly process. Furthermore, it is important to note the \textit{stacking headers} featured in Figures 
+\ref{fig:sim7020e_topview} and \ref{fig:sim7020e_bottomview}, which consist of female headers with extended male pins. These 
+pins are designed to penetrate the PCB and connect to another female header underneath. While this setup may appear standard, 
+improper soldering, with excess tin reaching too high on the male part of the header, can lead to faulty connections with the 
+PCB or breadboard. Therefore, if the team intends to assemble the device on-site, careful soldering is a must.
 
 \begin{figure}[h]
     \centering
@@ -425,7 +426,7 @@ yielded no response, needing a power cycle to restore functionality. This could 
 reconnecting the power source or by pulling down the ``RSTPD\_N'' pin on the board. To mitigate this recurring problem, a 
 solution involving the insertion of a transistor between the microcontroller and the VCC pin on the NFC board was devised. 
 This approach was favored over direct soldering onto a minuscule 1-millimeter pin on the NFC board, which presented 
-challenges and fitting problems.
+challenges and fitting problems. This will be covered in more detail in the next chapter.
 
 
 \subsection{The SIM7020E board}
@@ -439,7 +440,7 @@ ensured by referencing the datasheet and wiki documentation provided by the manu
 
 Although the device includes a 3.7V Li-Po battery in the box, it was decided against its utilization due to concerns about 
 introducing an additional point of failure to the device. Furthermore, its presence impedes the Raspberry Pi from undergoing 
-a hard reset when disconnected from the power source.
+a hard reset when disconnected from the power source, since this battery keeps feeding the 5V rail on the Pi Pico.
 
 
 \subsection{Buzzer and other components}
