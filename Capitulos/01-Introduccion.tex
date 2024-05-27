@@ -1,55 +1,53 @@
-\chapter{Introducción}
+\chapter{Introducción y Objetivos}
 \label{cap:introduccion}
 
-\chapterquote{Frase célebre dicha por alguien inteligente}{Autor}
+Cambios recientes en la legislación introducidos tanto por la Agencia Española de Protección de 
+Datos como por el gobierno nacional han exigido alteraciones en los procedimientos de fichaje 
+de los empleados. En particular, España ahora requiere que los empleados registren su entrada al 
+llegar al trabajo, lo que obliga a implementar sistemas confiables de seguimiento del tiempo 
+\cite{boe_obligacionfichajes}. Además, la Agencia Española de Protección de Datos ha prohibido el 
+uso de dispositivos de fichaje que empleen métodos de identificación biométrica, como el escaneo 
+de huellas dactilares o el reconocimiento facial \cite{aepd_prohibicionbiometricos}.
 
-Según la normativa  para Trabajos de Fin de Grado\footnote{\url{https://informatica.ucm.es/file/normativatfg-2021-2022?ver} (ver versión actualizada para cada curso académico)}, la memoria incluirá una portada normalizada con la siguiente información: título en castellano, título en inglés, autores, profesor director, codirector si es el caso, curso
-académico e identificación de la asignatura (Trabajo de fin de grado del Grado en -
-nombre del grado correspondiente-, Facultad de Informática, Universidad Complutense de Madrid). Los datos referentes al título y director (y codirector en su caso) deben corresponder a los publicados en la página web de TFG.
+Una empresa en particular gestiona muchos miles de empleados en toda España, y era de suma 
+importancia reemplazar rápidamente los dispositivos no conformes por otros diferentes, ya que 
+muchas empresas ya estaban siendo multadas con sumas considerables, desde decenas hasta cientos de 
+miles de euros, por no cumplir con los nuevos requisitos regulatorios.
 
-La memoria debe incluir la descripción detallada de la propuesta hardware/software realizada y ha de contener:
-\begin{enumerate}
-\renewcommand{\theenumi}{\alph{enumi}}
-	\item un índice,
-	\item un resumen y una lista de no más de 10 palabras clave para su búsqueda bibliográfica, ambos en castellano e inglés,
-	\item una introducción con los antecedentes, objetivos y plan de trabajo,
-	\item resultados y discusión crítica y razonada de los mismos, con sus conclusiones,
-	\item bibliografía.
-\end{enumerate}
-Para facilitar la escritura de la memoria siguiendo esta estructura, el estudiante podrá usar las plantillas en LaTeX o Word preparadas al efecto y publicadas en la página web de TFG.
+La empresa ya tenía proveedores para muchos tipos de dispositivos de fichaje, y muchos de ellos 
+eran conformes, pero tenían un precio de varios cientos de euros cada uno. Ahora, enfrentándose a 
+la necesidad de reemplazar \textit{miles} de unidades a un costo considerable, la perspectiva de 
+hacerlo se presentaba como un gran desafío. Además, subcontratar estos dispositivos a menudo 
+implicaba comprometerse con ecosistemas complejos de administración de empleados, lo que añadía 
+más complicaciones e incrementaba la complejidad de los datos que la empresa maneja.
 
-La memoria constará de un mínimo de 25 páginas para los proyectos realizados por un único estudiante, y de al menos 5 páginas más por cada integrante adicional del grupo. En este número de páginas solo se tiene en cuenta el contenido correspondiente a los apartados c y d del punto anterior.
-
-La memoria puede estar escrita en castellano o inglés, pero en el primer caso la introducción y las conclusiones deben aparecer también en inglés. Las memorias de los TFG matriculados en el grupo I deberán estar escritas íntegramente en inglés, excepto por lo especificado en los puntos 1 y 2 anteriores (título, resumen y lista de palabras clave).
-
-En caso de trabajos no unipersonales, cada participante indicará en la memoria su contribución al proyecto con una extensión de al menos dos páginas por cada uno de los participantes.
-
-Todo el material no original, ya sea texto o figuras, deberá ser convenientemente citado y referenciado. En el caso de material complementario se deben respetar las licencias y \emph{copyrights} asociados al software y hardware que se emplee. En caso contrario no se autorizará la defensa, sin menoscabo de otras acciones que correspondan.
-
-
-\section{Motivación}
-Introducción al tema del TFG.
-
+Estos problemas fueron planteados al equipo de innovación de la empresa, que fue encargado de 
+llevar una solución al mercado.
 
 \section{Objetivos}
-Descripción de los objetivos del trabajo.
 
+Dados los desafíos y consideraciones anteriores, se consideró necesario el desarrollo de un 
+dispositivo rentable y el establecimiento de una infraestructura en la nube.
 
-\section{Plan de trabajo}
-Aquí se describe el plan de trabajo a seguir para la consecución de los objetivos descritos en el apartado anterior.
+Los objetivos de este proyecto son los siguientes:
 
-
-
-\section{Explicaciones adicionales sobre el uso de esta plantilla}
-Si quieres cambiar el \textbf{estilo del título} de los capítulos del documento, edita el fichero \verb|TeXiS\TeXiS_pream.tex| y comenta la línea \verb|\usepackage[Lenny]{fncychap}| para dejar el estilo básico de \LaTeX.
-
-Si no te gusta que no haya \textbf{espacios entre párrafos} y quieres dejar un pequeño espacio en blanco, no metas saltos de línea (\verb|\\|) al final de los párrafos. En su lugar, busca el comando  \verb|\setlength{\parskip}{0.2ex}| en \verb|TeXiS\TeXiS_pream.tex| y aumenta el valor de $0.2ex$ a, por ejemplo, $1ex$.
-
-TFGTeXiS se ha elaborado a partir de la plantilla de TeXiS\footnote{\url{http://gaia.fdi.ucm.es/research/texis/}}, creada por Marco Antonio y Pedro Pablo Gómez Martín para escribir su tesis doctoral. Para explicaciones más extensas y detalladas sobre cómo usar esta plantilla, recomendamos la lectura del documento \texttt{TeXiS-Manual-1.0.pdf} que acompaña a esta plantilla.
-
-El siguiente texto se genera con el comando \verb|\lipsum[2-20]| que viene a continuación en el fichero .tex. El único propósito es mostrar el aspecto de las páginas usando esta plantilla. Quita este comando y, si quieres, comenta o elimina el paquete \textit{lipsum} al final de \verb|TeXiS\TeXiS_pream.tex|
-
-\subsection{Texto de prueba}
-
-
-\lipsum[2-20]
+\begin{itemize}
+	\item \textbf{Diseño y Prototipado}: Diseñar un dispositivo utilizando microcontroladores y 
+	módulos electrónicos adicionales, como pantallas LCD y lectores NFC, para cumplir con los 
+	requisitos especificados.
+	\item \textbf{Diseño de PCB}: Desarrollar un diseño de placa de circuito impreso (PCB) para 
+	facilitar la interconexión de los diversos módulos electrónicos utilizados en el dispositivo, 
+	asegurando un rendimiento eficiente y confiable.
+	\item \textbf{Desarrollo de API}: Crear una \textit{Application Programming Interface} (API) 
+	capaz de desplegarse como un contenedor de Docker o una Google Cloud Function, permitiendo una 
+	comunicación fluida entre el dispositivo y los servicios basados en la nube.
+	\item \textbf{Investigación de Microcontroladores}: Investigar las limitaciones y capacidades 
+	de los microcontroladores, particularmente los basados en RP2040, para informar las decisiones 
+	de diseño y optimizar el rendimiento.
+	\item \textbf{Impresión y Modelado 3D}: Explorar los fundamentos de la impresión 3D y el 
+	modelado 3D necesarios para diseñar una caja adecuada para el dispositivo. Además, proporcionar 
+	una visión general y comparación de varios materiales adecuados para la fabricación de la 
+	caja, considerando factores como durabilidad, costo y atractivo estético.
+	\item \textbf{Análisis de Costos}: Realizar una breve comparación de costos entre la nueva 
+	solución y el sistema anterior, demostrando los beneficios financieros del nuevo diseño.
+\end{itemize}
