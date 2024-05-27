@@ -58,14 +58,14 @@ key step in achieving a successful recycling process.
 Shredding the plastic is straightforward with the \textit{GP20 Plastic Shredder}\footnote{GP20 
 Plastic Shredder: \url{https://www.3devo.com/gp20-plastic-shredder}} by \textit{3devo}. However, 
 due to HDPE's elastic nature and resistance to breaking apart, the shredder occasionally needed to 
-reverse its blades to effectively cut through the material. This is done automatically nonetheless.
+reverse its blades to effectively cut through the material. This happens automatically nonetheless.
 
 Regarding post-processing, most filaments require drying after shredding but before filamenting. 
 This is because moisture in the plastic can lead to steam vapor during extrusion, which deforms 
 the plastic and ruins the filament roll. Despite this, multiple attempts to remove water from the 
 HDPE plastic using 3devo's AIRID dryer\footnote{AIRID dryer: \url{https://www.3devo.com/dryer}} 
 yielded negligible results. The weight difference of a 500g bag of shredded filament after drying 
-was only 0.05g, resulting in 499.5g, which could be attributed to residual plastic left in the 
+was only 0.5g, resulting in 499.5g, which could be attributed to residual plastic left in the 
 dryer and falls within the margin of error.
 
 Given this experimentation, it was concluded that drying the shredded plastic was unnecessary for 
@@ -88,20 +88,22 @@ be seen, and in Figure \ref{fig:shredder_dryer} both machines can be seen.
 
 
 \section{Filament Production}
-The filament production process was conducted using 3devo's Filament Maker ONE Composer. This 
-machine is highly versatile, allowing fine-tuning through the configuration of numerous 
-parameters. The most relevant parameters and their impact on filament quality are detailed below.
+The filament production process was conducted using 3devo's \textit{Filament Maker ONE 
+Composer}\footnote{Filament Maker ONE Composer: 
+\url{https://www.3devo.com/filament-maker-one-composer-precision}}. This machine is highly 
+versatile, allowing fine-tuning through the configuration of numerous parameters. The most 
+relevant parameters and their impact on filament quality are detailed below.
 
 \subsubsection*{Extrusion and Filament Diameter}
 The filamenting machine is equipped with a sensor that continuously measures the diameter of the 
 extruded filament. To maintain a consistent diameter, the machine uses a puller mechanism. This 
 puller clamps onto the filament and adjusts its speed: increasing the speed when the filament is 
 too thick and decreasing it when the filament is too thin. This adjustment process stretches or 
-compresses the filament accordingly. Additionally, the machine can produce a graphical 
-representation of the filament's diameter over time, aiding in the monitoring and adjustment 
-process. This graph can be seen in Figure \ref{fig:filament_graph_2}. It can be seen that the 
-diamater is fairly unstable, missing by a considerable margin the targets set by the two 
-horizontal lines, delimiting the 1.650 and 1.850 millimeters range.
+compresses the filament accordingly to achieve the desired diameter. Additionally, the machine can 
+produce a graphical representation of the filament's diameter over time, aiding in the monitoring 
+and adjustment process. This graph can be seen in Figure \ref{fig:filament_graph_2}. It can be 
+seen that the diamater is fairly unstable, missing by a considerable margin the targets set by the 
+two horizontal lines, delimiting the 1.650 and 1.850 millimeters range.
 
 \begin{figure}[h]
 	\centering
